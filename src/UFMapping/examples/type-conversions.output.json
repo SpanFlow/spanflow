@@ -1,0 +1,48 @@
+{
+  "batchId": "341c1770-d2ab-56be-98c6-765ed848c864",
+  "checks": {
+    "qtyIsInt": true,
+    "priceIsInt": false,
+    "idIsUuidV4": true
+  },
+  "orders": [
+    {
+      "id": "919108f7-52d1-4320-9bac-f847db4148a8",
+      "idValid": true,
+      "refVersion": 7,
+      "refCreated": "2022-02-22T19:22:22Z",
+      "quantity": 3,
+      "unitPrice": 1234.567,
+      "priceText": "1,234.57",
+      "roundedPrice": 1235,
+      "paid": true,
+      "placedDate": "2024-01-15",
+      "placedUtc": "2024-01-15T10:30:00Z",
+      "placedEpochMs": 1705314600000,
+      "shippedAt": "2024-01-16T10:13:20Z",
+      "shippedKarachi": "16 Jan 2024 15:13",
+      "shippedSeconds": 1705400000,
+      "score": 87.6,
+      "scoreType": "number"
+    },
+    {
+      "id": null,
+      "idValid": false,
+      "refVersion": 1,
+      "refCreated": "2022-02-22T19:22:22Z",
+      "quantity": 2,
+      "unitPrice": 12,
+      "priceText": "12.00",
+      "roundedPrice": 12,
+      "paid": false,
+      "placedDate": "2024-02-01",
+      "placedUtc": "2024-02-01T03:00:00Z",
+      "placedEpochMs": 1706756400000,
+      "shippedAt": "2024-02-01T06:46:40Z",
+      "shippedKarachi": "01 Feb 2024 11:46",
+      "shippedSeconds": 1706770000,
+      "score": 0,
+      "scoreType": "string"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "target": {
+    "type": "object",
+    "mappings": [
+      {
+        "target": "profile.fullName",
+        "transform": {
+          "function": "concat",
+          "args": [ "input.user.firstName", "' '", "input.user.lastName" ]
+        }
+      },
+      {
+        "target": "summary.completedAmount",
+        "aggregate": {
+          "function": "sum",
+          "from": "input.orders[]",
+          "where": { "field": "status", "op": "eq", "value": "Completed" },
+          "select": "amount"
+        }
+      },
+      {
+        "target": "summary.orderCount",
+        "aggregate": {
+          "function": "count",
+          "from": "input.orders[]"
+        }
+      },
+      {
+        "target": "summary.avgAmount",
+        "aggregate": {
+          "function": "avg",
+          "from": "input.orders[]",
+          "select": "amount"
+        }
+      },
+      {
+        "target": "summary.distinctStatuses",
+        "aggregate": {
+          "function": "distinct",
+          "from": "input.orders[]",
+          "select": "status"
+        }
+      },
+      {
+        "target": "customers",
+        "groupBy": {
+          "from": "input.orders[]",
+          "key": "customerId",
+          "map": {
+            "customerId": "key",
+            "totalAmount": {
+              "aggregate": {
+                "function": "sum",
+                "select": "amount"
+              }
+            },
+            "orderCount": {
+              "aggregate": {
+                "function": "count"
+              }
+            },
+            "lastStatus": {
+              "aggregate": {
+                "function": "last",
+                "select": "status"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

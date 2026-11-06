@@ -1,0 +1,11 @@
+{
+  "orders": [
+    { "id": 1, "customerId": "C1", "status": "Completed", "amount": 100 },
+    { "id": 2, "customerId": "C2", "status": "Pending", "amount": 50 },
+    { "id": 3, "customerId": "C1", "status": "Completed", "amount": 150 }
+  ],
+  "customers": [
+    { "custId": "C1", "name": "Acme" },
+    { "custId": "C2", "name": "Globex" }
+  ]
+}

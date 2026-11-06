@@ -1,0 +1,25 @@
+{
+  "sample": { "qty": "3", "price": "12.5", "id": "919108F752D143209BACF847DB4148A8" },
+  "orders": [
+    {
+      "id": "919108F752D143209BACF847DB4148A8",
+      "ref": "017f22e2-79b0-7cc3-98c4-dc0c0c07398f",
+      "qty": "3",
+      "price": "1234.567",
+      "paid": "yes",
+      "placedAt": "15/01/2024 10:30",
+      "shippedTs": 1705400000000,
+      "score": "87.6"
+    },
+    {
+      "id": "not-a-uuid",
+      "ref": "c232ab00-9414-11ec-b3c8-9f6bdeced846",
+      "qty": "2.9",
+      "price": 12,
+      "paid": 0,
+      "placedAt": "2024-02-01T08:00:00+05:00",
+      "shippedTs": 1706770000,
+      "score": "n/a"
+    }
+  ]
+}

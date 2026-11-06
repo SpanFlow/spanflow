@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Packable.props" />
+
+  <PropertyGroup>
+    <PackageId>SpanFlow.Mapping.Core</PackageId>
+    <Description>The mapping definition model and validator for SpanFlow Mapping: rules, conditions, aggregates and the checks that run before a mapping executes.</Description>
+  </PropertyGroup>
+
+</Project>

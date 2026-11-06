@@ -1,0 +1,38 @@
+{
+  "target": {
+    "type": "object",
+    "mappings": [
+      {
+        "target": "highValueOrders",
+        "filter": {
+          "from": "input.orders[]",
+          "where": { "field": "amount", "op": "gte", "value": 100 }
+        }
+      },
+      {
+        "target": "enriched",
+        "join": {
+          "left": "input.orders[]",
+          "right": "input.customers[]",
+          "leftKey": "customerId",
+          "rightKey": "custId"
+        }
+      },
+      {
+        "target": "byAmountDesc",
+        "sort": {
+          "from": "input.orders[]",
+          "keys": [ { "by": "amount", "order": "desc" } ]
+        }
+      },
+      {
+        "target": "summary.topAmount",
+        "aggregate": { "function": "max", "from": "input.orders[]", "select": "amount" }
+      },
+      {
+        "target": "summary.customerCount",
+        "aggregate": { "function": "countDistinct", "from": "input.orders[]", "select": "customerId" }
+      }
+    ]
+  }
+}

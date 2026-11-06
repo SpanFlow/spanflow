@@ -1,0 +1,15 @@
+bin/
+obj/
+node_modules/
+dist/
+TestResults/
+.vs/
+.vscode/
+.idea/
+*.user
+.env
+.env.*
+!.env.example
+!.env.worker.example
+!src/Platform/platform-admin/.env.development
+*.mmdb

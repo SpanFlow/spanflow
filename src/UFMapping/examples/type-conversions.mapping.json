@@ -1,0 +1,46 @@
+{
+  "target": {
+    "type": "object",
+    "mappings": [
+      {
+        "target": "batchId",
+        "transform": { "function": "newUuid", "args": [ 5, "'dns'", "'orders.example.com'" ] }
+      },
+      {
+        "target": "checks.qtyIsInt",
+        "transform": { "function": "isType", "args": [ "input.sample.qty", "'int'" ] }
+      },
+      {
+        "target": "checks.priceIsInt",
+        "transform": { "function": "isType", "args": [ "input.sample.price", "'int'" ] }
+      },
+      {
+        "target": "checks.idIsUuidV4",
+        "transform": { "function": "isUuid", "args": [ "input.sample.id", "'4'" ] }
+      },
+      {
+        "target": "orders",
+        "foreach": "input.orders[]",
+        "map": {
+          "id":            { "function": "toUuid",        "args": [ "id" ] },
+          "idValid":       { "function": "isUuid",        "args": [ "id" ] },
+          "refVersion":    { "function": "uuidVersion",   "args": [ "ref" ] },
+          "refCreated":    { "function": "uuidTimestamp", "args": [ "ref" ] },
+          "quantity":      { "function": "toInt",         "args": [ "qty" ] },
+          "unitPrice":     { "function": "toDecimal",     "args": [ "price" ] },
+          "priceText":     { "function": "toString",      "args": [ { "function": "toDecimal", "args": [ "price" ] }, "'N2'" ] },
+          "roundedPrice":  { "function": "toInt",         "args": [ "price", "'round'" ] },
+          "paid":          { "function": "toBool",        "args": [ "paid" ] },
+          "placedDate":    { "function": "formatDate",    "args": [ "placedAt", "'yyyy-MM-dd'", "'dd/MM/yyyy HH:mm|iso'" ] },
+          "placedUtc":     { "function": "formatDate",    "args": [ "placedAt", "'iso'", "'dd/MM/yyyy HH:mm|iso'", "'utc'" ] },
+          "placedEpochMs": { "function": "toEpoch",       "args": [ "placedAt", "'ms'", "'dd/MM/yyyy HH:mm|iso'" ] },
+          "shippedAt":     { "function": "fromEpoch",     "args": [ "shippedTs" ] },
+          "shippedKarachi":{ "function": "fromEpoch",     "args": [ "shippedTs", "'auto'", "'dd MMM yyyy HH:mm'", "'Asia/Karachi'" ] },
+          "shippedSeconds":{ "function": "convertEpoch",  "args": [ "shippedTs", "'auto'", "'s'" ] },
+          "score":         { "function": "coalesce",      "args": [ { "function": "toDouble", "args": [ "score" ] }, 0 ] },
+          "scoreType":     { "function": "detectType",    "args": [ "score" ] }
+        }
+      }
+    ]
+  }
+}

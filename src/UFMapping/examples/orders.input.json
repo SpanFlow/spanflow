@@ -1,0 +1,17 @@
+
+	{
+	  "user": {
+		"firstName": "Areeb",
+		"lastName": "Khan",
+		"age": 23
+	  },
+	  "orders": [
+		{ "id": 1, "customerId": "C1", "status": "Pending", "amount": 100 },
+		{ "id": 2, "customerId": "C2", "status": "Pending", "amount": 50 },
+		{ "id": 3, "customerId": "C1", "status": "Completed", "amount": 150 },
+		{ "id": 1, "customerId": "C1", "status": "Pending", "amount": 100 },
+		{ "id": 2, "customerId": "C2", "status": "Pending", "amount": 50 },
+		{ "id": 3, "customerId": "C1", "status": "Completed", "amount": 150 }
+	  ]
+	}
+	

@@ -1,0 +1,38 @@
+<Project>
+  <!-- Imported by the packable libraries (Core, Engine): one place for the target list, the package
+       files and the support pieces for older targets. -->
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
+    <IsPackable>true</IsPackable>
+    <!-- These two libraries are MIT (LICENSE.md beside each project); the rest of SpanFlow is FSL-1.1-ALv2. -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Not every public member has an XML comment yet; keep the docs that exist without failing the build. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <!-- Polyfill: also generate ArgumentNullException.ThrowIfNull and friends, and keep every generated
+         type internal so it never leaks into a consumer's compilation. -->
+    <PolyArgumentExceptions>true</PolyArgumentExceptions>
+    <PolyUseEmbeddedAttribute>true</PolyUseEmbeddedAttribute>
+  </PropertyGroup>
+
+  <!-- netstandard2.0's BCL carries no nullable annotations, so its nullable warnings are noise there; the
+       net8.0+ builds still check nullability for real. -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <NoWarn>$(NoWarn);nullable</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)PACKAGE.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+  <!-- Polyfill is source-only (MIT, nothing ships in the package) and only fills in what a target lacks:
+       compiler attributes and BCL APIs on netstandard2.0, Guid.CreateVersion7 on net8.0, nothing on net10.0. -->
+  <ItemGroup>
+    <PackageReference Include="Polyfill" Version="11.4.5" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+  </ItemGroup>
+
+  <!-- netstandard2.0 gets System.Text.Json (and System.Memory with it) as packages. -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Text.Json" Version="10.0.1" />
+  </ItemGroup>
+</Project>

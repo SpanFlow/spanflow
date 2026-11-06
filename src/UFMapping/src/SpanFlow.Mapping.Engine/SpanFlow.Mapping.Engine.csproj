@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Packable.props" />
+
+  <PropertyGroup>
+    <PackageId>SpanFlow.Mapping.Engine</PackageId>
+    <Description>Runs SpanFlow Mapping definitions over JSON: turns one shape of data into another with paths, functions, conditions, grouping and aggregates. In-process, no server needed.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpanFlow.Mapping.Core\SpanFlow.Mapping.Core.csproj" />
+  </ItemGroup>
+
+  <!-- .NET Framework on Windows only knows Windows time zone ids; this resolves IANA ids too
+       (Compat/NetStandardCompat.cs). net8.0+ does that natively. -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="TimeZoneConverter" Version="8.0.1" />
+  </ItemGroup>
+
+</Project>

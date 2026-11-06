@@ -1,0 +1,97 @@
+# Packs SpanFlow.Mapping.Core and SpanFlow.Mapping.Engine from this repository and pushes them to nuget.org.
+#
+# Run it by hand: Actions > nuget > Run workflow, with the package version and the tag to pack (e.g. v1.0.1).
+# Package versions are independent of SpanFlow release versions and start at 1.0.0.
+#
+# Sign-in is nuget.org Trusted Publishing: no API key is stored here. GitHub's OIDC token is exchanged for a
+# short-lived key, which nuget.org only issues to this repository + this workflow file (+ the `nuget` environment),
+# as configured in the publishing policy owned by the SpanFlow organisation on nuget.org.
+# Repository variable NUGET_USER = the nuget.org user name (profile name, not email) that created that policy.
+name: nuget
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Package version (semver, 1.0.0 or later)
+        required: true
+        default: 1.0.0
+      ref:
+        description: Tag or branch to pack (e.g. v1.0.1)
+        required: true
+        default: main
+      publish:
+        description: Push to nuget.org (off = pack only; the packages are kept as a run artifact)
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write # Trusted Publishing
+
+concurrency: nuget
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    environment: nuget
+    env:
+      VERSION: ${{ inputs.version }}
+      DOTNET_NOLOGO: true
+    steps:
+      - name: Check the version
+        run: |
+          if ! [[ "$VERSION" =~ ^[1-9][0-9]*\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "version must be semver starting at 1.0.0 (got '$VERSION')" >&2; exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      # The tests run on every runtime the packages target (net481 is Windows-only and skipped here).
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
+
+      - name: Test
+        # The test project, not UFMapping.slnx: it works in the full tree and in the mapping-only one.
+        run: dotnet test src/UFMapping/tests/SpanFlow.Mapping.Tests/SpanFlow.Mapping.Tests.csproj -c Release
+
+      # Source Link is off in the private source repo; here the checkout IS the public repo, so the packages
+      # and their symbols point at this exact commit on github.com/SpanFlow/spanflow.
+      - name: Pack
+        run: |
+          for p in SpanFlow.Mapping.Core SpanFlow.Mapping.Engine; do
+            dotnet pack "src/UFMapping/src/$p/$p.csproj" -c Release -o packages \
+              -p:Version="$VERSION" \
+              -p:ContinuousIntegrationBuild=true \
+              -p:EnableSourceLink=true \
+              -p:EnableSourceControlManagerQueries=true
+          done
+          ls -l packages
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages-${{ inputs.version }}
+          path: packages/
+
+      - name: NuGet login (Trusted Publishing)
+        if: inputs.publish
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ vars.NUGET_USER }}
+
+      # Pushes each .nupkg and its .snupkg. --skip-duplicate makes a re-run after a partial failure safe;
+      # nuget.org never lets a published version be replaced, so bump the version to change a package.
+      - name: Push
+        if: inputs.publish
+        run: |
+          dotnet nuget push "packages/*.nupkg" \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
