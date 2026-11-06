@@ -1,0 +1,18 @@
+<!doctype html>
+<!-- The standalone mapping designer page (vite.mapping.config.ts builds it as index.html). Served by the designer API itself in its
+     standalone mode, so it calls /api/... on its own origin. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0e1426" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/theme-init.js"></script>
+    <title>Mapping designer</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/standalone/main.tsx"></script>
+  </body>
+</html>

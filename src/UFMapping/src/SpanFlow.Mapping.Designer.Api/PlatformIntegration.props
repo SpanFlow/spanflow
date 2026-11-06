@@ -1,0 +1,19 @@
+<Project>
+  <!--
+    Whether the designer API is built WITH the Platform integration (Platform.Client: sign-in proxy, API keys,
+    dynamic CORS, queue logging, consumption recording) or as the standalone designer only.
+
+    Default: on when Platform.Client sits where the reference expects it (the private repos side by side, or the
+    full public tree under src/), off otherwise (the public "mapping" release, which has no Platform). Pass
+    -p:PlatformIntegration=true to make a missing Platform.Client a build error instead of a silent standalone
+    build; the stack's deploy/ufmapping-api.Dockerfile does exactly that.
+
+    Imported by the API and by its tests, so both agree on what was compiled in.
+  -->
+  <PropertyGroup>
+    <PlatformClientProject>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\..\Platform\Platform.Client\Platform.Client.csproj'))</PlatformClientProject>
+    <PlatformIntegration Condition="'$(PlatformIntegration)' == '' And Exists('$(PlatformClientProject)')">true</PlatformIntegration>
+    <PlatformIntegration Condition="'$(PlatformIntegration)' == ''">false</PlatformIntegration>
+    <DefineConstants Condition="'$(PlatformIntegration)' == 'true'">$(DefineConstants);PLATFORM_INTEGRATION</DefineConstants>
+  </PropertyGroup>
+</Project>

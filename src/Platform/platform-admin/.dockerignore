@@ -1,0 +1,4 @@
+# The designer image (UFMapping/Dockerfile.designer) uses this folder as a named build context.
+node_modules/
+dist/
+dist-mapping/

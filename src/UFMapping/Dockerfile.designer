@@ -1,0 +1,48 @@
+# The standalone SpanFlow mapping designer: the designer API in its standalone mode plus the designer UI, in one
+# image. No sign-in, no Platform, no message broker, no database.
+#
+#   docker run -p 8080:8080 ghcr.io/spanflow/mapping-designer
+#
+# then open http://localhost:8080. Every endpoint is open, so put it behind your own authentication (a reverse
+# proxy, a VPN) before exposing it beyond your machine.
+#
+# Build context: this repository (Core, Engine, Designer.Api). The UI comes from platform-admin, passed as the
+# named context "admin", because the mapping designer UI lives there (the Studio's Mapping tab) and this image
+# builds its standalone page (vite.mapping.config.ts):
+#
+#   private repos, side by side:  docker build -f Dockerfile.designer --build-context admin=../Platform/platform-admin .
+#   public tree (SpanFlow/spanflow): docker build src/UFMapping -f src/UFMapping/Dockerfile.designer \
+#                                      --build-context admin=src/Platform/platform-admin
+
+FROM node:22-alpine AS ui
+WORKDIR /ui
+COPY --from=admin package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY --from=admin vite.mapping.config.ts mapping-designer.html tsconfig.json tsconfig.app.json tsconfig.node.json ./
+COPY --from=admin public ./public
+COPY --from=admin src ./src
+# vite only (no tsc -b): the standalone page needs its own import closure, which is all a partial source tree
+# (the public "mapping" release) has. The Studio's own build typechecks the same files.
+RUN npx vite build -c vite.mapping.config.ts
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS api
+WORKDIR /src
+COPY . .
+# PlatformIntegration=false: the standalone build references only Core and Engine (no Platform.Client).
+# BuildFrontend=false: the UI comes from the stage above, not the legacy maplite-designer.
+RUN dotnet publish src/SpanFlow.Mapping.Designer.Api/SpanFlow.Mapping.Designer.Api.csproj \
+    -c Release -o /app -p:PlatformIntegration=false -p:BuildFrontend=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+WORKDIR /app
+COPY --from=api /app .
+COPY --from=ui /ui/dist-mapping ./wwwroot
+
+# Plain HTTP inside the container; terminate TLS at a proxy. Logs go to stdout. Probes: /healthz and /readyz.
+ENV ASPNETCORE_URLS=http://+:8080 \
+    ASPNETCORE_ENVIRONMENT=Production \
+    Platform__Enabled=false
+EXPOSE 8080
+# Runs as the image's non-root user; the app writes nothing to disk.
+USER $APP_UID
+ENTRYPOINT ["dotnet", "SpanFlow.Mapping.Designer.Api.dll"]

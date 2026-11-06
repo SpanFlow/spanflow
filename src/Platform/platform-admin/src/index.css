@@ -1,0 +1,162 @@
+@import "tailwindcss";
+@import "./brand.css";
+
+/* Dark mode is the `dark` class on <html>, set by lib/theme.ts (System / Light / Dark) — not the device
+   preference directly, so a person can choose. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* E62: the website's brand, applied by redefining Tailwind's own palette rather than editing the
+   ~6,000 slate/indigo utilities across the app. slate = the website's navy-tinted neutrals
+   (50 page, 200 border, 400 dark-mode muted, 900 text, 950 dark page), indigo = Span blue.
+   Status ramps (red, amber, emerald…) keep Tailwind's values: they carry meaning. */
+@theme {
+  /* Self-hosted (main.tsx imports @fontsource-variable/*) so on-prem installs need no font CDN. */
+  --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans Variable', 'Inter Variable', system-ui, sans-serif;
+
+  /* The website's softer shape: every radius one step rounder, cards toward its 14px. */
+  --radius: 0.375rem;
+  --radius-sm: 0.3125rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.125rem;
+
+  /* The website's two-layer navy-tinted shadows instead of Tailwind's grey ones. */
+  --shadow-xs: 0 1px 2px rgb(14 20 38 / 0.05);
+  --shadow-sm: 0 1px 2px rgb(14 20 38 / 0.06), 0 2px 6px rgb(14 20 38 / 0.04);
+  --shadow: 0 1px 2px rgb(14 20 38 / 0.06), 0 4px 12px rgb(14 20 38 / 0.05);
+  --shadow-md: 0 1px 2px rgb(14 20 38 / 0.06), 0 8px 24px rgb(14 20 38 / 0.06);
+  --shadow-lg: 0 1px 2px rgb(14 20 38 / 0.06), 0 12px 32px rgb(14 20 38 / 0.10);
+  --shadow-xl: 0 2px 4px rgb(14 20 38 / 0.06), 0 20px 48px rgb(14 20 38 / 0.14);
+
+  --color-primary: #3b5bfd; /* Span blue — the website's --brand */
+  --color-primary-dark: #2a44d6; /* the website's --brand-strong */
+  --color-accent: #12b5a0; /* Flow teal */
+
+  --color-slate-50: #f6f7fb;
+  --color-slate-100: #eef0f7;
+  --color-slate-200: #e3e6ef;
+  --color-slate-300: #cbd1e0;
+  --color-slate-400: #9aa5c0;
+  --color-slate-500: #5f6a85;
+  --color-slate-600: #4a5470;
+  --color-slate-700: #2a3450;
+  --color-slate-800: #151d35;
+  --color-slate-900: #0e1426;
+  --color-slate-950: #0a0f1e;
+
+  --color-indigo-50: #eef1ff;
+  --color-indigo-100: #dfe5ff;
+  --color-indigo-200: #c3cdff;
+  --color-indigo-300: #9db0ff;
+  --color-indigo-400: #6b85ff;
+  --color-indigo-500: #3b5bfd;
+  --color-indigo-600: #2a44d6;
+  --color-indigo-700: #2236ad;
+  --color-indigo-800: #1f2f88;
+  --color-indigo-900: #1d2a6b;
+  --color-indigo-950: #121a42;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  /* Light or dark is the `dark` class on <html> (lib/theme.ts: System / Light / Dark, System following the
+     device). Tailwind's `dark:` utilities read the same class (@custom-variant above), so the base body
+     colours and the native `color-scheme` follow it too — otherwise component backgrounds go dark while
+     inherited body text stays black. */
+  .dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-slate-50 text-slate-900 transition-colors duration-300;
+  }
+  .dark body {
+    @apply bg-slate-950 text-slate-100;
+  }
+  /* The website's display face for headings; sizes and weights stay as each screen sets them. */
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+}
+
+/* E62-T6: the canvases run React Flow in its light theme, so in dark mode its zoom buttons were near-white
+   under the page's near-white text (icons invisible) and minimap nodes stayed light grey. Its own variables,
+   pointed at the navy palette. Unlayered on purpose: @xyflow/react's stylesheet is unlayered and would beat
+   any @layer rule whatever its specificity. */
+.dark body .react-flow {
+  --xy-controls-button-background-color-default: var(--color-slate-800);
+  --xy-controls-button-background-color-hover-default: var(--color-slate-700);
+  --xy-controls-button-color-default: var(--color-slate-100);
+  --xy-controls-button-color-hover-default: #ffffff;
+  --xy-controls-button-border-color-default: var(--color-slate-700);
+  --xy-minimap-node-background-color-default: var(--color-slate-600);
+  --xy-minimap-mask-background-color-default: rgb(10 15 30 / 0.6);
+}
+
+/* A filled button is often the shared outline `btn` class plus `bg-primary text-white`, and that class
+   carries a light hover (hover:bg-slate-50 / dark:hover:bg-slate-800). Both hovers set the same
+   property, Tailwind sorts the light one last, so hovering turned the button white under white text —
+   even where the call site added hover:bg-primary/90. The extra class here outranks any single hover
+   utility, so a filled button keeps its fill whatever outline class it was built on. */
+@layer utilities {
+  .bg-primary.text-white:hover {
+    background-color: var(--color-primary-dark);
+  }
+  .bg-primary.text-white:disabled:hover {
+    background-color: var(--color-primary);
+  }
+  /* E62: a plain filled primary button is a pill with the website's soft brand glow. Only `rounded` /
+     `rounded-md` buttons and links — segmented controls (rounded-l/-r/-none), badges and step numbers keep
+     their shape. */
+  button.bg-primary.text-white:is(.rounded, .rounded-md),
+  a.bg-primary.text-white:is(.rounded, .rounded-md) {
+    border-radius: 9999px;
+    box-shadow: 0 4px 14px rgb(59 91 253 / 0.28);
+  }
+  button.bg-primary.text-white:is(.rounded, .rounded-md):disabled {
+    box-shadow: none;
+  }
+
+  /* E62-T4: the website's brand touches, for the few signature places (sign-in, the studio name,
+     Start here, empty lists). Ordinary screens stay on the palette alone. */
+  .brand-text {
+    background: var(--brand-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .brand-mark {
+    display: inline-grid;
+    place-items: center;
+    border-radius: 0.75rem;
+    background: var(--brand-gradient);
+    color: #fff;
+  }
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--brand);
+  }
+  /* Span blue text on the dark surfaces is 3.3:1. Dark mode reads the lighter brand blue the website
+     uses there (5.1:1). Only text: a filled bg-primary keeps #3b5bfd, where white text is 5.1:1. */
+  .dark .text-primary, .dark .hover\:text-primary:hover { color: var(--color-indigo-400); }
+
+  /* ~1,000 grey hints are written `text-slate-500` with no dark: colour of their own, which is 3.1:1 on a
+     dark card. In dark mode those (and the few slate-600/700 without one) read the dark-mode muted shade
+     (6.8:1) or the secondary shade. An element that names its own dark:text-* colour is left alone. */
+  .dark .text-slate-500:not([class*='dark:text-']) { color: var(--color-slate-400); }
+  .dark :is(.text-slate-600, .text-slate-700):not([class*='dark:text-']) { color: var(--color-slate-300); }
+
+  /* The website hero's soft blue/teal glow behind the sign-in card. */
+  .brand-backdrop {
+    background:
+      radial-gradient(ellipse at 70% 0%, color-mix(in srgb, var(--brand) 14%, transparent), transparent 55%),
+      radial-gradient(ellipse at 10% 100%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 50%);
+  }
+}

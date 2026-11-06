@@ -1,4 +1,4 @@
-# Builds and tests the published mapping libraries on every push and pull request. It can only use what is in
+# Builds and tests the published mapping libraries and the standalone designer on every push and pull request. It can only use what is in
 # this repository, which is the proof that the published tree builds without any private code.
 # (Mapping-only release: replaced by the full CI when the whole product is published.)
 name: ci
@@ -25,3 +25,13 @@ jobs:
             10.0.x
       - name: Test
         run: dotnet test src/UFMapping/tests/SpanFlow.Mapping.Tests/SpanFlow.Mapping.Tests.csproj -c Release
+      - name: Test the designer API (standalone mode)
+        run: dotnet test src/UFMapping/tests/SpanFlow.Mapping.Designer.Tests/SpanFlow.Mapping.Designer.Tests.csproj -c Release
+
+  designer-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Builds the UI and the API together, the way the published image is built (not pushed).
+      - name: Build the designer image
+        run: docker build src/UFMapping -f src/UFMapping/Dockerfile.designer --build-context admin=src/Platform/platform-admin -t mapping-designer

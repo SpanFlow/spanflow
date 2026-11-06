@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- PlatformIntegration: with or without Platform.Client. See the file. -->
+  <Import Project="PlatformIntegration.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <FrontendDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\maplite-designer'))</FrontendDir>
+    <!-- Publish the bundled maplite-designer SPA into wwwroot. Set false (-p:BuildFrontend=false) to
+         publish the API alone: it needs node/npm on the build machine, and a deployment whose mapping
+         UI comes from platform-admin (roadmap E08-T17) doesn't serve this SPA at all. The container
+         image in Platform/deploy does exactly that. With no maplite-designer beside it (the public
+         release) it is off: the standalone image (Dockerfile.designer) builds the designer UI from
+         platform-admin's mapping entry and copies it into wwwroot itself. -->
+    <BuildFrontend Condition="'$(BuildFrontend)' == '' And Exists('$(FrontendDir)\package.json')">true</BuildFrontend>
+    <BuildFrontend Condition="'$(BuildFrontend)' == ''">false</BuildFrontend>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpanFlow.Mapping.Engine\SpanFlow.Mapping.Engine.csproj" />
+    <ProjectReference Include="..\SpanFlow.Mapping.Core\SpanFlow.Mapping.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Platform control plane client (sibling repo): single login, API keys, dynamic CORS, consumption
+       analytics, execution logging. Only in a PlatformIntegration build; the Platform/ folder is the code
+       that uses it and is left out of a standalone build, which needs only Core and Engine. -->
+  <ItemGroup Condition="'$(PlatformIntegration)' == 'true'">
+    <ProjectReference Include="$(PlatformClientProject)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(PlatformIntegration)' != 'true'">
+    <Compile Remove="Platform\**" />
+    <None Remove="Platform\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SpanFlow.Mapping.Designer.Tests" />
+  </ItemGroup>
+
+  <!-- Ensure an (empty) wwwroot exists so the static-web-assets tooling and
+       `dotnet run` don't fail before the SPA has been published into it.
+       It stays empty in dev (gitignored); publish fills it from the build. -->
+  <Target Name="EnsureWwwroot" BeforeTargets="Build;Publish">
+    <MakeDir Directories="$(MSBuildThisFileDirectory)wwwroot" />
+  </Target>
+
+  <!-- Step 1: Build the React SPA before dotnet assembles the publish output. -->
+  <Target Name="BuildFrontend" BeforeTargets="Publish" Condition="'$(BuildFrontend)' == 'true'">
+    <Message Text="[Frontend] Running npm ci ..." Importance="high" />
+    <Exec Command="npm ci" WorkingDirectory="$(FrontendDir)" />
+
+    <!-- Write .env.production so VITE_API_URL is empty (relative /api/ calls). -->
+    <WriteLinesToFile File="$(FrontendDir)\.env.production"
+                      Lines="VITE_API_URL="
+                      Overwrite="true" />
+
+    <Message Text="[Frontend] Running npm run build ..." Importance="high" />
+    <Exec Command="npm run build" WorkingDirectory="$(FrontendDir)" />
+    <Message Text="[Frontend] Build complete." Importance="high" />
+  </Target>
+
+  <!-- Step 2: Replace the publish wwwroot with a fresh copy of dist/. We clear it
+       first so repeated publishes into the same folder never mix old and new
+       hashed bundles (which leaves index.html pointing at a missing bundle). -->
+  <Target Name="CopyFrontendToPublish" AfterTargets="Publish" Condition="'$(BuildFrontend)' == 'true'">
+    <RemoveDir Directories="$(PublishDir)wwwroot" />
+    <ItemGroup>
+      <FrontendDist Include="$(FrontendDir)\dist\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FrontendDist)"
+          DestinationFolder="$(PublishDir)wwwroot\%(RecursiveDir)" />
+    <Message Text="[Frontend] Copied dist to $(PublishDir)wwwroot\" Importance="high" />
+  </Target>
+
+</Project>

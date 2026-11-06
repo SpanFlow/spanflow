@@ -1,0 +1,16 @@
+/* The product brand, shared with the public website (E62). These values are copied from
+   website/src/styles/global.css; a website content test fails if the two drift apart, so change both.
+   Tailwind's palette in index.css is built from the same colours (slate = the navy-tinted neutrals,
+   indigo/primary = Span blue), so most screens never reference these variables directly — they are for
+   the few brand surfaces (logo mark, gradient text, accent). */
+:root {
+  --brand: #3b5bfd;
+  --brand-strong: #2a44d6;
+  --accent: #12b5a0;
+  --brand-gradient: linear-gradient(120deg, #3b5bfd 0%, #6b4dff 45%, #12b5a0 100%);
+}
+/* Dark mode is the `dark` class on <html> (lib/theme.ts), so the light/dark switch moves these too. */
+.dark {
+  --brand: #6b85ff;
+  --accent: #2fd4bc;
+}
