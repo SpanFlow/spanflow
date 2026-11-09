@@ -35,7 +35,7 @@
           "placedUtc":     { "function": "formatDate",    "args": [ "placedAt", "'iso'", "'dd/MM/yyyy HH:mm|iso'", "'utc'" ] },
           "placedEpochMs": { "function": "toEpoch",       "args": [ "placedAt", "'ms'", "'dd/MM/yyyy HH:mm|iso'" ] },
           "shippedAt":     { "function": "fromEpoch",     "args": [ "shippedTs" ] },
-          "shippedKarachi":{ "function": "fromEpoch",     "args": [ "shippedTs", "'auto'", "'dd MMM yyyy HH:mm'", "'Asia/Karachi'" ] },
+          "shippedNewYork":{ "function": "fromEpoch",     "args": [ "shippedTs", "'auto'", "'dd MMM yyyy HH:mm'", "'America/New_York'" ] },
           "shippedSeconds":{ "function": "convertEpoch",  "args": [ "shippedTs", "'auto'", "'s'" ] },
           "score":         { "function": "coalesce",      "args": [ { "function": "toDouble", "args": [ "score" ] }, 0 ] },
           "scoreType":     { "function": "detectType",    "args": [ "score" ] }

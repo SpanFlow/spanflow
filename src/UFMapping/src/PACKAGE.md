@@ -45,7 +45,7 @@ JsonNode output = new MappingEngine().Execute(mapping, input);
 
 ## Notes for .NET Framework / .NET Standard 2.0
 
-- IANA time zone ids (`Asia/Karachi`) and Windows ids both work on every target; on .NET Standard 2.0
+- IANA time zone ids (`America/New_York`) and Windows ids both work on every target; on .NET Standard 2.0
   they are resolved through the TimeZoneConverter package.
 - .NET Framework's `double.Parse` is not correctly rounded, so a few extreme values (such as `1e300`) can come
   back one unit in the last place off from what .NET 8+ produces. Integers and decimals are unaffected.

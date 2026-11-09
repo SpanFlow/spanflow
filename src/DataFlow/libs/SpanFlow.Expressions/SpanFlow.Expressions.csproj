@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>SpanFlow.Expressions</PackageId>
+    <Description>The small, safe expression and {{ template }} language SpanFlow pipelines use: paths, literals, comparisons, boolean logic and exists() over JSON. Not a scripting engine: nothing in an expression can execute code.</Description>
+    <PackageTags>spanflow;expressions;templates;json;mustache</PackageTags>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>SpanFlow.Connectors.Abstractions</PackageId>
+    <Description>The small types every SpanFlow connector library shares, such as the result of a connection check.</Description>
+    <PackageTags>spanflow;connectors;abstractions</PackageTags>
+  </PropertyGroup>
+
+</Project>

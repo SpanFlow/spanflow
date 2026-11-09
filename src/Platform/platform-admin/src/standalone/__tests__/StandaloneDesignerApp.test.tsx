@@ -41,4 +41,12 @@ describe('StandaloneDesignerApp', () => {
     expect(screen.queryByRole('button', { name: 'Maximize' })).not.toBeInTheDocument()
     expect(screen.getByText('Standalone')).toBeInTheDocument()
   })
+
+  it('links "Powered by" to the product website', () => {
+    render(<StandaloneDesignerApp />)
+
+    const link = screen.getByRole('link', { name: /Powered by/ })
+    expect(link.getAttribute('href')).toMatch(/^https:\/\/spanflow\.app\/\?utm_source=mapping-playground/)
+    expect(link).toHaveAttribute('target', '_blank')
+  })
 })

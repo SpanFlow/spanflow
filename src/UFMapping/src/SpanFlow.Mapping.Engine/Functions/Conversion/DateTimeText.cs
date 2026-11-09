@@ -125,7 +125,7 @@ public static class DateTimeText
 
         return TimeZoneInfo.TryFindSystemTimeZoneById(id, out var zone)
             ? zone
-            : throw new InvalidOperationException($"Unknown time zone '{id}'. Use an IANA id (e.g. 'Asia/Karachi'), 'utc', 'local' or an offset like '+05:00'.");
+            : throw new InvalidOperationException($"Unknown time zone '{id}'. Use an IANA id (e.g. 'America/New_York'), 'utc', 'local' or an offset like '-05:00'.");
     }
 
     private static bool TryParseText(string text, string? inputFormat, out DateTimeOffset result)

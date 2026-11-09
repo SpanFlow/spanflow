@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>SpanFlow.Connectors.Database</PackageId>
+    <Description>One adapter interface over PostgreSQL, SQL Server, MySQL/MariaDB and SQLite: open connections, list tables and columns, run parameterized queries, write and upsert rows. Includes a query advisor that flags risky SQL before it runs.</Description>
+    <PackageTags>spanflow;database;sql;postgresql;sqlserver;mysql;sqlite;ado.net;etl</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="MySqlConnector" />
+    <PackageReference Include="Microsoft.Data.Sqlite" />
+    <ProjectReference Include="..\SpanFlow.Expressions\SpanFlow.Expressions.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -32,7 +32,7 @@ internal static class NetStandardCompat
     {
         /// <summary>
         /// .NET Framework on Windows only knows Windows ids, so TimeZoneConverter maps IANA ids
-        /// (e.g. 'Asia/Karachi') as well, the way .NET 8+ does natively.
+        /// (e.g. 'America/New_York') as well, the way .NET 8+ does natively.
         /// </summary>
         public static bool TryFindSystemTimeZoneById(string id, out TimeZoneInfo? zone)
         {

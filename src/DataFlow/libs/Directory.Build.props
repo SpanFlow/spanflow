@@ -1,0 +1,57 @@
+<Project>
+  <!-- The open-source SpanFlow libraries (MIT, published to NuGet from the public repo). They sit in the DataFlow
+       repo because DataFlow is their main user; DataFlow.Services references them as projects. Nothing in here
+       may reference DataFlow.*, Platform.* or a database context: each library builds on its own. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>NU1901;NU1902;NU1903;NU1904</WarningsNotAsErrors>
+    <IsPackable>true</IsPackable>
+    <!-- These libraries are MIT (LICENSE.md beside each project); the rest of SpanFlow is FSL-1.1-ALv2. -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Not every public member has an XML comment yet; keep the docs that exist without failing the build. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <Authors>farazahmed614</Authors>
+    <Company>SpanFlow</Company>
+    <Product>SpanFlow</Product>
+    <Copyright>Copyright 2026 farazahmed614</Copyright>
+    <PackageProjectUrl>https://github.com/SpanFlow/spanflow</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SpanFlow/spanflow</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>PACKAGE.md</PackageReadmeFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- This repo is private; the public source is the exported SpanFlow/spanflow tree. Source Link would stamp
+         the private remote and commit into the packages, so it stays off here; the public repo's nuget workflow
+         passes -p:EnableSourceLink=true -p:EnableSourceControlManagerQueries=true. -->
+    <EnableSourceLink>false</EnableSourceLink>
+    <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- The libraries' own tests (libs/tests) and DataFlow's, which predate the split, test internals too. -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="SpanFlow.Libraries.Tests" />
+    <InternalsVisibleTo Include="DataFlow.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="PACKAGE.md" Pack="true" PackagePath="\" />
+    <None Include="LICENSE.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <!-- Polyfill is source-only (MIT, nothing ships in the package) and only fills in what a target lacks, such as
+       System.Threading.Lock on net8.0. Generated types stay internal so they never leak into a consumer. -->
+  <PropertyGroup>
+    <PolyUseEmbeddedAttribute>true</PolyUseEmbeddedAttribute>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Polyfill" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+  </ItemGroup>
+</Project>

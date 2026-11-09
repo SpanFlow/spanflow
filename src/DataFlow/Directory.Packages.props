@@ -1,0 +1,91 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="2.12.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.12" />
+    <PackageVersion Include="Npgsql" Version="10.0.3" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <!-- Additional db providers (sqlite adapter landed in E02-T2; sqlserver/mysql in E02-T3). -->
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="7.0.3" />
+    <PackageVersion Include="MySqlConnector" Version="2.6.2" />
+    <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.12" />
+    <PackageVersion Include="EFCore.NamingConventions" Version="10.0.1" />
+    <!-- xlsx read/write for the file connector (E04-T3). -->
+    <PackageVersion Include="ClosedXML" Version="0.105.1" />
+    <!-- Remote file stores (E04-T4): sftp + ftp. -->
+    <PackageVersion Include="SSH.NET" Version="2026.0.0" />
+    <!-- Queue triggers + the rabbitmq connection (E06-T5). The same version Platform.Client already brings. -->
+    <PackageVersion Include="RabbitMQ.Client" Version="7.2.2" />
+    <!-- Password hashing (E48-T3): Argon2id (also used by the PuTTY key reader) and bcrypt. -->
+    <PackageVersion Include="Konscious.Security.Cryptography.Argon2" Version="1.3.1" />
+    <PackageVersion Include="BCrypt.Net-Next" Version="4.2.1" />
+    <PackageVersion Include="FluentFTP" Version="54.2.1" />
+    <!-- Object stores (E04-T5): s3 (+ MinIO via endpoint) and Azure Blob (+ Azurite). -->
+    <PackageVersion Include="AWSSDK.S3" Version="4.0.103.3" />
+    <PackageVersion Include="Azure.Storage.Blobs" Version="12.29.2" />
+    <!-- Email notifications (E05-T1): smtp provider. -->
+    <PackageVersion Include="MailKit" Version="4.18.0" />
+    <!-- Catalog config schemas (E13-T1): JSON Schema validation on save. BSD-3-Clause; replaced JsonSchema.Net,
+         whose 8.x+ EULA charges commercial users. Only DataFlow.Services/Validation/JsonSchemaCheck.cs uses it. -->
+    <PackageVersion Include="LateApexEarlySpeed.Json.Schema" Version="4.2.3" />
+    <!-- OpenAPI/Swagger → app-manifest import (E10-T6): parse a YAML API description into a JsonNode. -->
+    <PackageVersion Include="YamlDotNet" Version="18.1.0" />
+    <!-- DNS TXT lookups for custom-domain verification (E34-T3): System.Net.Dns resolves names, it does
+         not query record types, and a challenge is a TXT record. -->
+    <PackageVersion Include="DnsClient" Version="1.8.0" />
+    <!-- Cron expression parsing for scheduled triggers (E06-T1). -->
+    <PackageVersion Include="Cronos" Version="0.13.0" />
+    <!-- LDAP/AD directory source connector (E07-T1), cross-platform. -->
+    <PackageVersion Include="System.DirectoryServices.Protocols" Version="10.0.12" />
+    <!-- MCP client node (E10-T4): call MCP server tools over stdio/http. -->
+    <PackageVersion Include="ModelContextProtocol.Core" Version="2.2.0" />
+    <!-- MCP server (E10-T5): expose published pipelines as MCP tools over HTTP. -->
+    <PackageVersion Include="ModelContextProtocol.AspNetCore" Version="2.2.0" />
+    <!-- JavaScript code node (E11-T1): in-process, sandboxed JS interpreter (no Node.js/CLR). -->
+    <PackageVersion Include="AngleSharp" Version="1.7.2" />
+    <PackageVersion Include="AngleSharp.XPath" Version="2.0.6" />
+    <PackageVersion Include="HtmlSanitizer" Version="9.2.1039" />
+    <PackageVersion Include="Jint" Version="4.16.2" />
+    <!-- C# code node (E11-T2): Roslyn scripting with a restricted reference set (opt-in, feature-gated). -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="5.0.0" />
+    <!-- Extract node (E12-T3): PDF text-layer extraction (and tiny test PDFs via its builder). -->
+    <PackageVersion Include="PdfPig" Version="0.1.16" />
+    <!-- Export node: png/jpeg rendering of tabular payloads; rasterizes the layout PdfPig also writes as pdf. MIT. Replaced QuestPDF,
+         whose community licence excludes larger, public-sector and listed organisations. PDF is written by PdfPig. The fontconfig-free
+         Linux natives: fonts are loaded from files (see ExportFonts). -->
+    <PackageVersion Include="SkiaSharp" Version="4.153.2" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="4.153.2" />
+    <!-- The AI call seam (E29-T16): IChatClient/IEmbeddingGenerator plus the middleware builder the
+         cost ledger, prompt cache and response cache register on. Verified against 10.9.0 — the
+         abstractions package carries the types, the other the ChatClientBuilder and its Use* handlers. -->
+    <PackageVersion Include="Microsoft.Playwright" Version="1.56.0" />
+    <!-- Source-only polyfills for the net8.0/net9.0 builds of the libs/ packages (System.Threading.Lock, ...). -->
+    <PackageVersion Include="Polyfill" Version="11.4.5" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.AI.Abstractions" Version="10.10.0" />
+    <PackageVersion Include="Microsoft.Extensions.AI" Version="10.10.0" />
+    <!-- Vector stores behind Microsoft.Extensions.VectorData (E29-T17): Qdrant + Azure AI Search for a
+         vectordb connection that is not pgvector, and the in-memory store the tests drive the same code
+         path through. The connectors still ship as -preview; the abstraction they implement is GA. -->
+    <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Qdrant" Version="1.74.0-preview" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Connectors.AzureAISearch" Version="1.74.0-preview" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Connectors.InMemory" Version="1.74.0-preview" />
+    <!-- Local in-process inference (E29-T20): llama.cpp/GGUF. The managed package in Services, the
+         native CPU backend only in the API host — tests and libraries never carry native binaries. -->
+    <PackageVersion Include="LLamaSharp" Version="0.27.0" />
+    <PackageVersion Include="LLamaSharp.Backend.Cpu" Version="0.27.0" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+    <!-- FakeTimeProvider: a clock whose TIMERS fire when a test advances it, rather than when
+         wall-clock time passes. Worth a package reference where the GetUtcNow-only fake in
+         FeatureGateTests wasn't: TimeProvider.CreateTimer's default implementation is a REAL timer,
+         which is exactly the part that must be faked here — and the fiddly part to hand-roll. -->
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="10.10.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
+  </ItemGroup>
+</Project>

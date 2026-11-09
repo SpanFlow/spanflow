@@ -20,7 +20,7 @@
       "placedUtc": "2024-01-15T10:30:00Z",
       "placedEpochMs": 1705314600000,
       "shippedAt": "2024-01-16T10:13:20Z",
-      "shippedKarachi": "16 Jan 2024 15:13",
+      "shippedNewYork": "16 Jan 2024 05:13",
       "shippedSeconds": 1705400000,
       "score": 87.6,
       "scoreType": "number"
@@ -39,7 +39,7 @@
       "placedUtc": "2024-02-01T03:00:00Z",
       "placedEpochMs": 1706756400000,
       "shippedAt": "2024-02-01T06:46:40Z",
-      "shippedKarachi": "01 Feb 2024 11:46",
+      "shippedNewYork": "01 Feb 2024 01:46",
       "shippedSeconds": 1706770000,
       "score": 0,
       "scoreType": "string"

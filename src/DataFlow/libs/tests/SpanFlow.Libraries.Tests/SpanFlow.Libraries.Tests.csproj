@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Tests of the open-source libraries alone: no DataFlow, Platform or database server. Published with them,
+       and run by the public repo's CI and nuget workflow before anything is packed. -->
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SpanFlow.Expressions\SpanFlow.Expressions.csproj" />
+    <ProjectReference Include="..\..\SpanFlow.Connectors.Abstractions\SpanFlow.Connectors.Abstractions.csproj" />
+    <ProjectReference Include="..\..\SpanFlow.Connectors.Http\SpanFlow.Connectors.Http.csproj" />
+    <ProjectReference Include="..\..\SpanFlow.Connectors.Files\SpanFlow.Connectors.Files.csproj" />
+    <ProjectReference Include="..\..\SpanFlow.Connectors.Database\SpanFlow.Connectors.Database.csproj" />
+  </ItemGroup>
+
+</Project>

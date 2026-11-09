@@ -1,6 +1,6 @@
 import { MappingDesigner } from '../mapping/MappingDesigner'
 import ThemeButton from '../components/ThemeButton'
-import { mappingName } from '../lib/brand'
+import { mappingName, productName, productUrl } from '../lib/brand'
 
 /** The one workspace this page autosaves, in the browser's own storage (no account, no server). */
 export const STANDALONE_WORKSPACE_KEY = 'standalone'
@@ -25,6 +25,14 @@ export default function StandaloneDesignerApp() {
           >
             Standalone
           </span>
+          <a
+            href={`${productUrl}/?utm_source=mapping-playground&utm_medium=powered-by`}
+            target="_blank"
+            rel="noopener"
+            className="text-[11px] font-medium text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 transition-colors"
+          >
+            Powered by <span className="font-semibold">{productName}</span>
+          </a>
           <ThemeButton className="p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors flex items-center gap-1" />
         </div>
       }

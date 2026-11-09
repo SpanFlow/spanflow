@@ -1,7 +1,10 @@
-# Packs SpanFlow.Mapping.Core and SpanFlow.Mapping.Engine from this repository and pushes them to nuget.org.
+# Packs one family of SpanFlow's MIT libraries from this repository and pushes it to nuget.org:
+#   mapping     SpanFlow.Mapping.Core, SpanFlow.Mapping.Engine
+#   libraries   SpanFlow.Expressions, SpanFlow.Connectors.Abstractions, .Http, .Files, .Database
 #
-# Run it by hand: Actions > nuget > Run workflow, with the package version and the tag to pack (e.g. v1.0.1).
-# Package versions are independent of SpanFlow release versions and start at 1.0.0.
+# Run it by hand: Actions > nuget > Run workflow, with the family, the package version and the tag to pack
+# (e.g. v1.0.1). Each family has its own versions, independent of SpanFlow release versions, starting at 1.0.0.
+# Every package of a family gets the same version, and the packages in it depend on each other at that version.
 #
 # Sign-in is nuget.org Trusted Publishing: no API key is stored here. GitHub's OIDC token is exchanged for a
 # short-lived key, which nuget.org only issues to this repository + this workflow file (+ the `nuget` environment),
@@ -12,6 +15,11 @@ name: nuget
 on:
   workflow_dispatch:
     inputs:
+      family:
+        description: Which packages (mapping = SpanFlow.Mapping.*; libraries = SpanFlow.Expressions + SpanFlow.Connectors.*)
+        type: choice
+        options: [mapping, libraries]
+        default: mapping
       version:
         description: Package version (semver, 1.0.0 or later)
         required: true
@@ -37,6 +45,7 @@ jobs:
     environment: nuget
     env:
       VERSION: ${{ inputs.version }}
+      FAMILY: ${{ inputs.family }}
       DOTNET_NOLOGO: true
     steps:
       - name: Check the version
@@ -49,6 +58,26 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
+      # The family's test project and the projects to pack. Test projects, not solutions: they work in the full
+      # tree and in a libraries-only one.
+      - name: Pick the family
+        run: |
+          case "$FAMILY" in
+            mapping)
+              echo "TESTS=src/UFMapping/tests/SpanFlow.Mapping.Tests/SpanFlow.Mapping.Tests.csproj" >> "$GITHUB_ENV"
+              echo "PROJECTS=src/UFMapping/src/SpanFlow.Mapping.Core/SpanFlow.Mapping.Core.csproj src/UFMapping/src/SpanFlow.Mapping.Engine/SpanFlow.Mapping.Engine.csproj" >> "$GITHUB_ENV"
+              ;;
+            libraries)
+              echo "TESTS=src/DataFlow/libs/tests/SpanFlow.Libraries.Tests/SpanFlow.Libraries.Tests.csproj" >> "$GITHUB_ENV"
+              projects=""
+              for p in SpanFlow.Expressions SpanFlow.Connectors.Abstractions SpanFlow.Connectors.Http SpanFlow.Connectors.Files SpanFlow.Connectors.Database; do
+                projects="$projects src/DataFlow/libs/$p/$p.csproj"
+              done
+              echo "PROJECTS=$projects" >> "$GITHUB_ENV"
+              ;;
+            *) echo "unknown family '$FAMILY'" >&2; exit 1 ;;
+          esac
+
       # The tests run on every runtime the packages target (net481 is Windows-only and skipped here).
       - uses: actions/setup-dotnet@v4
         with:
@@ -58,15 +87,14 @@ jobs:
             10.0.x
 
       - name: Test
-        # The test project, not UFMapping.slnx: it works in the full tree and in the mapping-only one.
-        run: dotnet test src/UFMapping/tests/SpanFlow.Mapping.Tests/SpanFlow.Mapping.Tests.csproj -c Release
+        run: dotnet test "$TESTS" -c Release
 
-      # Source Link is off in the private source repo; here the checkout IS the public repo, so the packages
+      # Source Link is off in the private source repos; here the checkout IS the public repo, so the packages
       # and their symbols point at this exact commit on github.com/SpanFlow/spanflow.
       - name: Pack
         run: |
-          for p in SpanFlow.Mapping.Core SpanFlow.Mapping.Engine; do
-            dotnet pack "src/UFMapping/src/$p/$p.csproj" -c Release -o packages \
+          for p in $PROJECTS; do
+            dotnet pack "$p" -c Release -o packages \
               -p:Version="$VERSION" \
               -p:ContinuousIntegrationBuild=true \
               -p:EnableSourceLink=true \
@@ -76,7 +104,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget-packages-${{ inputs.version }}
+          name: nuget-packages-${{ inputs.family }}-${{ inputs.version }}
           path: packages/
 
       - name: NuGet login (Trusted Publishing)

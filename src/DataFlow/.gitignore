@@ -1,0 +1,30 @@
+# .NET build output
+bin/
+obj/
+publish/
+*.user
+.vs/
+
+# Local secrets (Platform internal secret, JWT signing key, connection strings)
+appsettings.Development.json
+
+# Connector/pipeline local logs
+logs/
+*.log
+
+# Local SQLite files created by the file-DB demos at runtime
+demo-*.sqlite
+demo-*.sqlite-*
+
+# Client SDK build output and dependencies (clients/chat-client)
+node_modules/
+clients/**/dist/
+
+# Local SQLite databases — a sqlite connection's Data Source resolves against the API's working
+# directory, so a database created from the workbench lands next to the running service.
+*.db
+*.db-shm
+*.db-wal
+
+# Runtime data written by a locally running API (uploaded app assets and the like) — never source.
+DataFlow.Api/App_Data/

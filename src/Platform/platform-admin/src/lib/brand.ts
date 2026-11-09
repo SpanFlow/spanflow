@@ -20,3 +20,6 @@ export const studioName = `${productShort}Studio`
 
 /** The mapping designer (the UFMapping service). */
 export const mappingName = `${productShort} Mapping`
+
+/** The product's website, where "Powered by" links go (VITE_PRODUCT_URL at build time, like the name). */
+export const productUrl: string = (env.VITE_PRODUCT_URL || 'https://spanflow.app').replace(/\/+$/, '')

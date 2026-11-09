@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>SpanFlow.Connectors.Files</PackageId>
+    <Description>Reads and writes rows in CSV, TSV, delimited, JSON, NDJSON, XLSX and binary files, and stores files on a local folder (confined to allowed roots), Amazon S3, Azure Blob Storage or FTP/FTPS behind one IFileStore interface.</Description>
+    <PackageTags>spanflow;csv;xlsx;excel;ndjson;s3;azure-blob;ftp;files;etl</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" />
+    <PackageReference Include="FluentFTP" />
+    <PackageReference Include="AWSSDK.S3" />
+    <PackageReference Include="Azure.Storage.Blobs" />
+    <ProjectReference Include="..\SpanFlow.Connectors.Abstractions\SpanFlow.Connectors.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
