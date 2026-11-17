@@ -93,6 +93,26 @@ public class PanelTests : IClassFixture<PanelTests.Host>
         Assert.True((await Ok("/api/expressions/evaluate", new { expression = nested }))["result"]!.GetValue<bool>());
     }
 
+    [Fact]
+    public async Task A_template_that_repeats_a_large_value_is_refused_before_it_is_built()
+    {
+        // Found by an attack pass: "{{ vars.s }}" 2,650 times over 30 KB is 80 MB of text; eight at once took the
+        // process past 2 GB, because the renderer built it all before the output cap was checked.
+        var data = new { vars = new { s = new string('x', 30_000) } };
+        var template = string.Concat(Enumerable.Repeat("{{ vars.s }}", 2650));
+        Assert.Equal("too_large", await (await _client.Post("/api/expressions/evaluate", new { mode = "template", template, data })).Refusal(HttpStatusCode.BadRequest));
+
+        var json = Enumerable.Repeat("{{ vars.s }}", 2000).ToArray();
+        Assert.Equal("too_large", await (await _client.Post("/api/expressions/evaluate", new { mode = "json", template = json, data })).Refusal(HttpStatusCode.BadRequest));
+
+        var rows = Enumerable.Range(0, 500).ToArray();
+        Assert.Equal("too_large", await (await _client.Post("/api/expressions/evaluate", new { mode = "batch", expression = "vars.s", rows, data })).Refusal(HttpStatusCode.BadRequest));
+
+        // A template under the cap still renders.
+        var small = await Ok("/api/expressions/evaluate", new { mode = "template", template = "{{ vars.s }}{{ vars.s }}", data });
+        Assert.Equal(60_000, small["result"]!.GetValue<string>().Length);
+    }
+
     // ---------------------------------------------------------------- http
 
     private static object Request(object? auth = null, string method = "POST", string path = "/orders/42/notes", object? body = null, string? challenge = null) => new
@@ -272,6 +292,25 @@ public class PanelTests : IClassFixture<PanelTests.Host>
         });
         Assert.Equal(["name", "orders"], answer["columns"]!.AsArray().Select(c => c!.GetValue<string>()));
         Assert.Equal(2, answer["rows"]![0]!["orders"]!.GetValue<long>());
+    }
+
+    [Fact]
+    public async Task A_huge_value_or_too_many_large_rows_is_refused_while_reading()
+    {
+        // Found by an attack pass: SELECT repeat('x', 200000000) on PostgreSQL loaded the whole value, then failed
+        // with a 500 writing the answer. Rows are now streamed and counted against the answer limit as they arrive.
+        var one = await _client.Post("/api/database/query", new { connectionId = "sample", sql = "SELECT hex(randomblob(400000)) AS big" });
+        Assert.Equal("too_large", await one.Refusal(HttpStatusCode.BadRequest));
+
+        var many = await _client.Post("/api/database/query", new
+        {
+            connectionId = "sample",
+            sql = "WITH RECURSIVE r(n) AS (SELECT 1 UNION ALL SELECT n + 1 FROM r WHERE n < 100) SELECT hex(randomblob(20000)) AS chunk FROM r",
+        });
+        Assert.Equal("too_large", await many.Refusal(HttpStatusCode.BadRequest));
+
+        var fine = await Ok("/api/database/query", new { connectionId = "sample", sql = "SELECT hex(randomblob(1000)) AS small" });
+        Assert.Equal(2000, fine["rows"]![0]!["small"]!.GetValue<string>().Length);
     }
 
     [Fact]

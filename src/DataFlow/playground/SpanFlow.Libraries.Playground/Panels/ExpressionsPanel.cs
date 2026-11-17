@@ -51,6 +51,7 @@ public static partial class ExpressionsPanel
             {
                 var template = PlaygroundEndpoint.RequireString(body, "template", MaxTemplateLength);
                 CheckTemplate(template);
+                CheckRenderedSize([template], context, call.Limits.MaxOutputBytes);
                 var value = Evaluate(() => TemplateRenderer.RenderString(template, context));
                 answer = new JsonObject { ["result"] = value?.DeepClone(), ["type"] = TypeOf(value) };
                 break;
@@ -60,6 +61,7 @@ public static partial class ExpressionsPanel
                 if (!body.ContainsKey("template")) throw PanelRefusal.Invalid("Send \"template\": any JSON whose strings may hold {{ }} placeholders.");
                 var template = body["template"];
                 foreach (var text in Strings(template)) CheckTemplate(text);
+                CheckRenderedSize(Strings(template), context, call.Limits.MaxOutputBytes);
                 var value = Evaluate(() => TemplateRenderer.Render(template, context));
                 answer = new JsonObject { ["result"] = value?.DeepClone(), ["type"] = TypeOf(value) };
                 break;
@@ -74,6 +76,7 @@ public static partial class ExpressionsPanel
                     throw PanelRefusal.Invalid("Batch reads an array: send \"rows\": [ ... ] (or make data.input an array).");
                 var results = new JsonArray();
                 var matched = 0;
+                long size = 0;
                 foreach (var row in rows.Take(call.Limits.MaxRows))
                 {
                     call.Cancellation.ThrowIfCancellationRequested();
@@ -81,6 +84,10 @@ public static partial class ExpressionsPanel
                     var value = Evaluate(() => ExpressionEvaluator.Evaluate(expression, rowContext));
                     var truthy = ExpressionEvaluator.EvaluateAsBool(expression, rowContext);
                     if (truthy) matched++;
+                    // Rows may each repeat a large root (vars.big): stop at the output cap, not after building it all.
+                    size += SizeOf(value);
+                    if (size > call.Limits.MaxOutputBytes)
+                        throw PanelRefusal.TooLarge($"The results pass {call.Limits.MaxOutputBytes:N0} bytes, the limit for an answer, by row {results.Count + 1:N0}.");
                     results.Add(new JsonObject { ["index"] = results.Count, ["result"] = value?.DeepClone(), ["truthy"] = truthy });
                 }
                 answer = new JsonObject
@@ -129,6 +136,34 @@ public static partial class ExpressionsPanel
             throw PanelRefusal.Failed(ex.Message);
         }
     }
+
+    /// <summary>
+    /// Refuses a template whose result would pass the output cap, counted BEFORE anything is built. A short template
+    /// can repeat a large value (<c>{{ vars.s }}</c> 3,000 times over 30 KB is 90 MB), and the renderer builds the whole
+    /// string first: eight such calls took the process past 2 GB. Each distinct placeholder is evaluated once.
+    /// </summary>
+    internal static void CheckRenderedSize(IEnumerable<string> templates, ExpressionContext context, int maxBytes)
+    {
+        long total = 0;
+        var sizes = new Dictionary<string, long>(StringComparer.Ordinal);
+        foreach (var template in templates)
+        {
+            total += template.Length;
+            foreach (Match match in Placeholder().Matches(template))
+            {
+                var expression = match.Groups["expr"].Value.Trim();
+                if (!sizes.TryGetValue(expression, out var size))
+                    sizes[expression] = size = SizeOf(Evaluate(() => ExpressionEvaluator.Evaluate(expression, context)));
+                total += size;
+                if (total > maxBytes)
+                    throw PanelRefusal.TooLarge($"This template would make more than {maxBytes:N0} bytes, the limit for an answer.");
+            }
+        }
+    }
+
+    /// <summary>Characters a value takes in an answer: a string's own length, anything else as JSON.</summary>
+    private static long SizeOf(JsonNode? value) =>
+        value is JsonValue v && v.TryGetValue<string>(out var text) ? text.Length : value?.ToJsonString().Length ?? 4;
 
     internal static void CheckTemplate(string template)
     {

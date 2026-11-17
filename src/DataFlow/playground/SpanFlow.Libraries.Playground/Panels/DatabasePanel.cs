@@ -109,9 +109,9 @@ public static partial class DatabasePanel
             command.CommandTimeout = Math.Max(1, (int)Math.Ceiling(call.Limits.TimeoutMs / 1000.0));
             foreach (var parameter in parameters) adapter.AddTypedParameter(command, parameter.Name, parameter.Value, null);
 
-            await using (var reader = await command.ExecuteReaderAsync(ct))
+            await using (var reader = await command.ExecuteReaderAsync(System.Data.CommandBehavior.SequentialAccess, ct))
             {
-                await ReadRows(reader, answer, call.Limits.MaxRows, ct);
+                await ReadRows(reader, answer, call.Limits.MaxRows, call.Limits.MaxOutputBytes, ct);
                 answer["rowsAffected"] = reader.RecordsAffected;
             }
 
@@ -157,8 +157,8 @@ public static partial class DatabasePanel
 
         try
         {
-            await using var reader = await command.ExecuteReaderAsync(ct);
-            await ReadRows(reader, answer, call.Limits.MaxRows, ct);
+            await using var reader = await command.ExecuteReaderAsync(System.Data.CommandBehavior.SequentialAccess, ct);
+            await ReadRows(reader, answer, call.Limits.MaxRows, call.Limits.MaxOutputBytes, ct);
         }
         catch (SqliteException ex) when (ex.SqliteErrorCode == raw.SQLITE_INTERRUPT)
         {
@@ -173,8 +173,14 @@ public static partial class DatabasePanel
         return answer;
     }
 
-    private static async Task ReadRows(DbDataReader reader, JsonObject answer, int maxRows, CancellationToken ct)
+    /// <summary>
+    /// Reads at most <paramref name="maxRows"/> rows, counting characters as they arrive and stopping at
+    /// <paramref name="maxChars"/>. Rows are streamed (SequentialAccess) and text/binary values read in chunks, so a
+    /// single huge value (<c>SELECT repeat('x', 200000000)</c>) is refused part-way instead of loaded whole.
+    /// </summary>
+    private static async Task ReadRows(DbDataReader reader, JsonObject answer, int maxRows, int maxChars, CancellationToken ct)
     {
+        long used = 0;
         var rows = new JsonArray();
         var columns = new JsonArray();
         var truncated = false;
@@ -183,7 +189,13 @@ public static partial class DatabasePanel
         {
             if (rows.Count == maxRows) { truncated = true; break; }
             var row = new JsonObject();
-            for (var i = 0; i < reader.FieldCount; i++) row[UniqueName(row, reader.GetName(i))] = Value(reader.IsDBNull(i) ? DBNull.Value : reader.GetValue(i));
+            for (var i = 0; i < reader.FieldCount; i++)
+            {
+                var value = await reader.IsDBNullAsync(i, ct) ? null : ReadValue(reader, i, maxChars - used);
+                used += SizeOf(value) + reader.GetName(i).Length + 4;
+                if (used > maxChars) throw TooMuch(maxChars, rows.Count + 1);
+                row[UniqueName(row, reader.GetName(i))] = value;
+            }
             rows.Add(row);
         }
         answer["columns"] = columns;
@@ -292,9 +304,53 @@ public static partial class DatabasePanel
         return unique;
     }
 
-    private static JsonNode? Value(object value) => value switch
+    private static PanelRefusal TooMuch(int maxChars, int row) =>
+        PanelRefusal.TooLarge($"The rows pass {maxChars:N0} characters, the limit for an answer, by row {row:N0}. Select fewer or smaller columns.");
+
+    private static PanelRefusal TooBig(long budget) =>
+        PanelRefusal.TooLarge($"A single value passes {Math.Max(0, budget):N0} characters, what is left of the limit for an answer.");
+
+    /// <summary>One value; text and binary are read in chunks and refused past <paramref name="budget"/>.</summary>
+    private static JsonNode? ReadValue(DbDataReader reader, int ordinal, long budget)
     {
-        DBNull => null,
+        var type = reader.GetFieldType(ordinal);
+        if (type == typeof(string))
+        {
+            var text = new System.Text.StringBuilder();
+            var buffer = new char[8192];
+            long offset = 0;
+            int read;
+            while ((read = (int)reader.GetChars(ordinal, offset, buffer, 0, buffer.Length)) > 0)
+            {
+                text.Append(buffer, 0, read);
+                offset += read;
+                if (offset > budget) throw TooBig(budget);
+            }
+            return JsonValue.Create(text.ToString());
+        }
+        if (type == typeof(byte[]))
+        {
+            using var bytes = new MemoryStream();
+            var buffer = new byte[8192];
+            long offset = 0;
+            int read;
+            while ((read = (int)reader.GetBytes(ordinal, offset, buffer, 0, buffer.Length)) > 0)
+            {
+                bytes.Write(buffer, 0, read);
+                offset += read;
+                if (offset * 4 / 3 > budget) throw TooBig(budget);
+            }
+            return Value(bytes.ToArray());
+        }
+        return Value(reader.GetValue(ordinal));
+    }
+
+    private static long SizeOf(JsonNode? value) =>
+        value is JsonValue v && v.TryGetValue<string>(out var text) ? text.Length : value?.ToJsonString().Length ?? 4;
+
+    private static JsonNode? Value(object? value) => value switch
+    {
+        null or DBNull => null,
         bool b => JsonValue.Create(b),
         byte or short or int or long or sbyte or ushort or uint => JsonValue.Create(Convert.ToInt64(value)),
         ulong u => JsonValue.Create(u),
