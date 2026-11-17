@@ -1,0 +1,29 @@
+{
+  "profiles": {
+    "selfhosted": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5470",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Playground__Mode": "SelfHosted",
+        "Playground__AccessKey": "dev-key"
+      }
+    },
+    "hosted": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5471;http://localhost:5472",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Playground__Mode": "Hosted",
+        "Playground__SyncPort": "5472",
+        "Playground__Connections__0__Id": "demo",
+        "Playground__Connections__0__Name": "Demo PostgreSQL (read only)",
+        "Playground__Connections__0__Provider": "postgres",
+        "Playground__Connections__0__ConnectionString": "Host=localhost;Port=5432;Database=playground;Username=playground_reader;Password=playground;Timeout=5",
+        "Playground__Connections__0__ShowConnectionString": "true"
+      }
+    }
+  }
+}

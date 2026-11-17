@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- E71: the public, no-sign-in playground for the open-source libraries in ../../libs. It references those five
+       libraries and nothing else: no Platform.Client, no DataFlow.*, no EF, no connection string, no secret
+       (docs/roadmap/E71-libraries-playground.md, D71.1). Keep it that way: PlaygroundIsolationTests fails on
+       anything that would let it reach the network, a file or a real database. -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" />
+  </ItemGroup>
+
+  <!-- Two ways to get the libraries. By default from source (../../libs). With -p:UseNuGetLibraries=true they come
+       from the published NuGet packages instead (-p:LibrariesVersion=..., default 1.0.0), so the playground builds
+       without libs/, the way someone running it on their own server would (playground/Dockerfile.nuget). Same code
+       either way: the packages are built from libs/. -->
+  <PropertyGroup>
+    <UseNuGetLibraries Condition="'$(UseNuGetLibraries)' == ''">false</UseNuGetLibraries>
+    <LibrariesVersion Condition="'$(LibrariesVersion)' == ''">1.0.0</LibrariesVersion>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(UseNuGetLibraries)' != 'true'">
+    <ProjectReference Include="..\..\libs\SpanFlow.Expressions\SpanFlow.Expressions.csproj" />
+    <ProjectReference Include="..\..\libs\SpanFlow.Connectors.Http\SpanFlow.Connectors.Http.csproj" />
+    <ProjectReference Include="..\..\libs\SpanFlow.Connectors.Files\SpanFlow.Connectors.Files.csproj" />
+    <ProjectReference Include="..\..\libs\SpanFlow.Connectors.Database\SpanFlow.Connectors.Database.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UseNuGetLibraries)' == 'true'">
+    <PackageReference Include="SpanFlow.Expressions" VersionOverride="$(LibrariesVersion)" />
+    <PackageReference Include="SpanFlow.Connectors.Http" VersionOverride="$(LibrariesVersion)" />
+    <PackageReference Include="SpanFlow.Connectors.Files" VersionOverride="$(LibrariesVersion)" />
+    <PackageReference Include="SpanFlow.Connectors.Database" VersionOverride="$(LibrariesVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SpanFlow.Libraries.Playground.Tests" />
+  </ItemGroup>
+
+</Project>

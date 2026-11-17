@@ -39,6 +39,8 @@
   <ItemGroup>
     <InternalsVisibleTo Include="SpanFlow.Libraries.Tests" />
     <InternalsVisibleTo Include="DataFlow.Tests" />
+    <!-- The libraries playground (../playground, E71) verifies signatures in its demo API with the same signing code. -->
+    <InternalsVisibleTo Include="SpanFlow.Libraries.Playground" />
   </ItemGroup>
 
   <ItemGroup>

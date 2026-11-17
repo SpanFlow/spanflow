@@ -37,6 +37,32 @@ dotnet add package SpanFlow.Connectors.Http
 
 Each package's own readme (shown on its NuGet page) has a short example.
 
+## Libraries playground
+
+Try the libraries in a browser before you write any code: expressions and templates, HTTP requests like Postman
+(every sign-in scheme above), file format conversion and SQL with the query advisor.
+
+Try it without installing anything at <https://libraries.spanflow.app>: no sign-in. There, requests go only to a
+built-in demo API that checks your signature, and queries only to a demo database that only reads.
+
+Run it on your own server, with your own APIs, databases and storage:
+
+```bash
+docker run -p 8080:8080 -v playground-data:/data -e Playground__AccessKey=choose-a-key ghcr.io/spanflow/libraries-playground
+```
+
+Then open `http://<server>:8080/?key=choose-a-key` once. In this mode:
+
+- **HTTP** sends to any address the server can reach; collections and environments are saved on the server.
+- **Database** connections you add (PostgreSQL, SQL Server, MySQL, SQLite) are read only unless you tick
+  *Allow writes*: a read-only run must start like a read and runs in a transaction that is rolled back.
+- **Files** read and write folders under `/data/files`, Amazon S3, Azure Blob Storage and FTP.
+- Everything you save is in `/data/playground.json`, so keep the volume.
+
+Without `Playground__AccessKey` a key is made at start and written to the log: the playground sends requests and
+opens connections for whoever holds the key, so it is never open by accident. Limits per panel are settings too,
+for example `-e Playground__Limits__Http__PerMinute=120`. The source is `src/DataFlow/playground`.
+
 ## Mapping designer
 
 A visual editor for mappings: drag Source, Target, Transform, Filter, Join, For Each, Group By and the other
@@ -112,6 +138,7 @@ The second command serves the designer UI at <http://localhost:5187> and sends i
 | `src/Platform/platform-admin` | The designer UI: `src/mapping` is the designer, `src/standalone` its page. Only the files that page needs are here; the rest of this app follows with the full release |
 | `src/DataFlow/libs` | The expression and connector libraries, one folder each |
 | `src/DataFlow/libs/tests/SpanFlow.Libraries.Tests` | Their tests |
+| `src/DataFlow/playground` | The libraries playground: the service, its page and its tests (`Dockerfile` for `docker run`) |
 
 ## Building and testing
 

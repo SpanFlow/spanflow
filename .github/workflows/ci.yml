@@ -41,6 +41,9 @@ jobs:
             10.0.x
       - name: Test
         run: dotnet test src/DataFlow/libs/tests/SpanFlow.Libraries.Tests/SpanFlow.Libraries.Tests.csproj -c Release
+      # The libraries playground (net10.0): its limits, both modes, and that the hosted mode reaches nothing real.
+      - name: Test the playground
+        run: dotnet test src/DataFlow/playground/SpanFlow.Libraries.Playground.Tests/SpanFlow.Libraries.Playground.Tests.csproj -c Release
 
   designer-image:
     runs-on: ubuntu-latest

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import 'fake-indexeddb/auto'
 import { IDBFactory } from 'fake-indexeddb'
 import StandaloneDesignerApp, { STANDALONE_WORKSPACE_KEY } from '../StandaloneDesignerApp'
@@ -13,6 +13,7 @@ import { saveWorkspace } from '../../mapping/store/templateDb'
 
 beforeEach(() => {
   globalThis.indexedDB = new IDBFactory()
+  localStorage.setItem('sf-consent', 'all')
   useStore.getState().resetWorkspace()
 })
 
@@ -48,5 +49,23 @@ describe('StandaloneDesignerApp', () => {
     const link = screen.getByRole('link', { name: /Powered by/ })
     expect(link.getAttribute('href')).toMatch(/^https:\/\/spanflow\.app\/\?utm_source=mapping-playground/)
     expect(link).toHaveAttribute('target', '_blank')
+  })
+
+  it('asks a first-time visitor about cookies, remembers the answer, and opens again from Cookie settings', () => {
+    localStorage.removeItem('sf-consent')
+    const { unmount } = render(<StandaloneDesignerApp />)
+
+    const notice = screen.getByRole('dialog', { name: 'Cookies and site storage' })
+    fireEvent.click(within(notice).getByRole('button', { name: 'Essential only' }))
+    expect(screen.queryByRole('dialog', { name: 'Cookies and site storage' })).not.toBeInTheDocument()
+    expect(localStorage.getItem('sf-consent')).toBe('essential')
+
+    unmount()
+    render(<StandaloneDesignerApp />)
+    expect(screen.queryByRole('dialog', { name: 'Cookies and site storage' })).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Cookie settings' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Accept all' }))
+    expect(localStorage.getItem('sf-consent')).toBe('all')
   })
 })
