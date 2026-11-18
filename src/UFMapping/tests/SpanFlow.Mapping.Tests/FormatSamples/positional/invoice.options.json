@@ -1,0 +1,9 @@
+{ "layout": { "fields": [
+  { "name": "invoice", "length": 6, "type": "numeric" },
+  { "name": "date", "length": 8, "type": "date", "format": "yyyyMMdd" },
+  { "name": "itemCount", "length": 2, "type": "integer" },
+  { "name": "items", "repeat": "itemCount", "fields": [
+    { "name": "sku", "length": 5 }, { "name": "qty", "length": 3, "type": "integer" }, { "name": "price", "length": 7, "type": "decimal", "scale": 2 } ] },
+  { "name": "paid", "length": 1, "type": "bool" },
+  { "filler": true, "length": 3 },
+  { "name": "total", "length": 9, "type": "decimal", "scale": 2, "sign": "leading" } ] } }

@@ -1,8 +1,8 @@
 # SpanFlow
 
 SpanFlow is a self-hosted platform for integrations, data pipelines and small apps, published as one API.
-This repository will hold its full source. For now it holds the libraries SpanFlow is built on, which are
-published to NuGet, and the standalone mapping designer; the rest of the product follows in a later release.
+This repository will hold its full source. For now it holds the mapping engine libraries, which are published
+to NuGet, and the standalone mapping designer; the rest of the product follows in a later release.
 
 ## SpanFlow mapping libraries
 
@@ -10,58 +10,13 @@ published to NuGet, and the standalone mapping designer; the rest of the product
 |---|---|
 | [SpanFlow.Mapping.Core](https://www.nuget.org/packages/SpanFlow.Mapping.Core) | The mapping model and its validation |
 | [SpanFlow.Mapping.Engine](https://www.nuget.org/packages/SpanFlow.Mapping.Engine) | Runs a mapping: turns one shape of data into another |
+| [SpanFlow.Mapping.Formats](https://www.nuget.org/packages/SpanFlow.Mapping.Formats) | Reads and writes the formats around a mapping: XML (with XSD), CSV and text, EDI X12 / EDIFACT (with guides), positional and ISO 8583, any code page incl. EBCDIC. JSON in the middle, the engine unchanged |
 
-Both target netstandard2.0, net8.0, net9.0 and net10.0.
+All three target netstandard2.0, net8.0, net9.0 and net10.0.
 
 ```bash
 dotnet add package SpanFlow.Mapping.Engine
 ```
-
-## SpanFlow expression and connector libraries
-
-The pieces SpanFlow pipelines use to read templates and to talk to other systems, each usable on its own.
-
-| Package | What it is |
-|---|---|
-| [SpanFlow.Expressions](https://www.nuget.org/packages/SpanFlow.Expressions) | The safe `{{ template }}` and expression language over JSON: paths, comparisons, boolean logic, nothing executable |
-| [SpanFlow.Connectors.Http](https://www.nuget.org/packages/SpanFlow.Connectors.Http) | Builds HTTP requests from JSON and signs them: API key, basic, bearer, OAuth 2 client credentials, token endpoints, Digest, Hawk, OAuth 1.0a, JWT bearer |
-| [SpanFlow.Connectors.Files](https://www.nuget.org/packages/SpanFlow.Connectors.Files) | CSV, TSV, JSON, NDJSON and XLSX rows, streamed or whole; files on a local folder, S3, Azure Blob Storage or FTP/FTPS |
-| [SpanFlow.Connectors.Database](https://www.nuget.org/packages/SpanFlow.Connectors.Database) | One adapter interface over PostgreSQL, SQL Server, MySQL/MariaDB and SQLite, with a query advisor |
-| [SpanFlow.Connectors.Abstractions](https://www.nuget.org/packages/SpanFlow.Connectors.Abstractions) | The small types the connector packages share |
-
-They target net8.0, net9.0 and net10.0.
-
-```bash
-dotnet add package SpanFlow.Connectors.Http
-```
-
-Each package's own readme (shown on its NuGet page) has a short example.
-
-## Libraries playground
-
-Try the libraries in a browser before you write any code: expressions and templates, HTTP requests like Postman
-(every sign-in scheme above), file format conversion and SQL with the query advisor.
-
-Try it without installing anything at <https://libraries.spanflow.app>: no sign-in. There, requests go only to a
-built-in demo API that checks your signature, and queries only to a demo database that only reads.
-
-Run it on your own server, with your own APIs, databases and storage:
-
-```bash
-docker run -p 8080:8080 -v playground-data:/data -e Playground__AccessKey=choose-a-key ghcr.io/spanflow/libraries-playground
-```
-
-Then open `http://<server>:8080/?key=choose-a-key` once. In this mode:
-
-- **HTTP** sends to any address the server can reach; collections and environments are saved on the server.
-- **Database** connections you add (PostgreSQL, SQL Server, MySQL, SQLite) are read only unless you tick
-  *Allow writes*: a read-only run must start like a read and runs in a transaction that is rolled back.
-- **Files** read and write folders under `/data/files`, Amazon S3, Azure Blob Storage and FTP.
-- Everything you save is in `/data/playground.json`, so keep the volume.
-
-Without `Playground__AccessKey` a key is made at start and written to the log: the playground sends requests and
-opens connections for whoever holds the key, so it is never open by accident. Limits per panel are settings too,
-for example `-e Playground__Limits__Http__PerMinute=120`. The source is `src/DataFlow/playground`.
 
 ## Mapping designer
 
@@ -131,14 +86,13 @@ The second command serves the designer UI at <http://localhost:5187> and sends i
 |---|---|
 | `src/UFMapping/src/SpanFlow.Mapping.Core` | Core library source |
 | `src/UFMapping/src/SpanFlow.Mapping.Engine` | Engine library source |
+| `src/UFMapping/src/SpanFlow.Mapping.Formats` | Formats library source (codecs, bundled EDI guides and starter layouts) |
+| `src/UFMapping/examples` | Worked examples, run by the tests (one is an EDI 997 acknowledgement made by a mapping) |
 | `src/UFMapping/tests/SpanFlow.Mapping.Tests` | Their tests |
 | `src/UFMapping/src/SpanFlow.Mapping.Designer.Api` | The designer's API |
 | `src/UFMapping/tests/SpanFlow.Mapping.Designer.Tests` | Its tests |
 | `src/UFMapping/Dockerfile.designer` | The designer image |
 | `src/Platform/platform-admin` | The designer UI: `src/mapping` is the designer, `src/standalone` its page. Only the files that page needs are here; the rest of this app follows with the full release |
-| `src/DataFlow/libs` | The expression and connector libraries, one folder each |
-| `src/DataFlow/libs/tests/SpanFlow.Libraries.Tests` | Their tests |
-| `src/DataFlow/playground` | The libraries playground: the service, its page and its tests (`Dockerfile` for `docker run`) |
 
 ## Building and testing
 
@@ -152,15 +106,11 @@ dotnet test src/UFMapping/tests/SpanFlow.Mapping.Tests/SpanFlow.Mapping.Tests.cs
 dotnet test src/UFMapping/tests/SpanFlow.Mapping.Designer.Tests/SpanFlow.Mapping.Designer.Tests.csproj
 ```
 
-```bash
-dotnet test src/DataFlow/libs/tests/SpanFlow.Libraries.Tests/SpanFlow.Libraries.Tests.csproj
-```
-
 ## Licence
 
-The mapping libraries and the expression and connector libraries are MIT-licensed (see the `LICENSE.md` in each
-library's folder). Everything else in this repository, the designer included, is under the
-[Functional Source License 1.1, Apache 2.0 future licence](LICENSE.md) (FSL-1.1-ALv2).
+The two mapping libraries are MIT-licensed (see the `LICENSE.md` in each folder). Everything else in this
+repository, the designer included, is under the [Functional Source License 1.1, Apache 2.0 future licence](LICENSE.md)
+(FSL-1.1-ALv2).
 
 ## Contributing and security
 

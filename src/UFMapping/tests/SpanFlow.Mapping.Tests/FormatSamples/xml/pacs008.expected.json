@@ -1,0 +1,23 @@
+{
+  "Document": {
+    "@xmlns": "urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08",
+    "FIToFICstmrCdtTrf": {
+      "GrpHdr": {
+        "MsgId": "PACS-1",
+        "CreDtTm": "2026-11-18T09:30:00",
+        "NbOfTxs": "1",
+        "SttlmInf": { "SttlmMtd": "CLRG" }
+      },
+      "CdtTrfTxInf": [
+        {
+          "PmtId": { "EndToEndId": "E2E-77" },
+          "IntrBkSttlmAmt": { "@Ccy": "PKR", "#text": 98000.25 },
+          "ChrgBr": "SLEV",
+          "Dbtr": { "Nm": "Ayesha Traders" },
+          "Cdtr": { "Nm": "Ali Khan" },
+          "RmtInf": { "Ustrd": [ "Invoice 2026-311" ] }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{ "layout": { "fields": [
+  { "name": "country", "length": 2, "type": "alpha" },
+  { "name": "account", "length": 13, "type": "numeric" },
+  { "name": "phone", "length": 11, "type": "numeric" },
+  { "name": "reference", "prefix": 2, "type": "alphanumeric" },
+  { "name": "memo", "prefix": 3, "max": 999 } ] } }

@@ -2,8 +2,11 @@ import type { Edge, Node } from '@xyflow/react';
 import type { CompileContext, Expr } from './compile-types';
 import { specByType } from './registry';
 import { ROOT_HANDLE } from './io/fieldTree';
+import { graphFormats, type MappingFormats } from '../formats/formats';
 
 export interface MappingDSL {
+  /** E73: how the raw input is read and the output written; left out when both sides are plain JSON. */
+  formats?: MappingFormats;
   target: {
     type: string;
     mappings?: any[];
@@ -402,8 +405,18 @@ export function compileFunctionDoc(nodes: Node[], edges: Edge[], functions: Func
   return { target: { type: 'object', mappings } };
 }
 
-/** Walk backward from every target field to build the nested mapping DSL. */
+/**
+ * The graph as a mapping definition: its rules, plus (E73) the input/output formats set on its Source and Target
+ * nodes. A graph whose formats are plain JSON compiles exactly as before, with no `formats` block.
+ */
 export function compileGraphToDsl(nodes: Node[], edges: Edge[], functions: FunctionMap = {}): MappingDSL {
+  const dsl = compileGraphRules(nodes, edges, functions);
+  const formats = graphFormats(nodes);
+  return formats ? { formats, ...dsl } : dsl;
+}
+
+/** Walk backward from every target field to build the nested mapping DSL. */
+function compileGraphRules(nodes: Node[], edges: Edge[], functions: FunctionMap = {}): MappingDSL {
   const targetNodes = nodes.filter((n) => n.type === 'target');
   const consumed = new Set<string>();
 

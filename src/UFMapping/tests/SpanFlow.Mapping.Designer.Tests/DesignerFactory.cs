@@ -42,5 +42,16 @@ internal static class Samples
         }
         """;
 
+    /// <summary>E73: XML in, CSV out, through /api/mapping/run.</summary>
+    public const string XmlToCsvRunBody = """
+        {
+          "mapping": {
+            "formats": { "input": { "type": "xml", "options": { "arrays": ["Line"] } }, "output": { "type": "text", "options": { "mode": "delimited" } } },
+            "target": { "type": "array", "from": "input.Order.Line[]", "map": { "sku": "@sku", "qty": "#text" } }
+          },
+          "rawInput": "<Order><Line sku=\"A\">2</Line><Line sku=\"B\">1</Line></Order>"
+        }
+        """;
+
     public static StringContent Json(string body) => new(body, System.Text.Encoding.UTF8, "application/json");
 }

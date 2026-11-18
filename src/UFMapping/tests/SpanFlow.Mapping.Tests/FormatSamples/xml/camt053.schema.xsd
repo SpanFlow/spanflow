@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A cut-down camt.053.001.08 (bank to customer statement): the parts the sample uses, with the official names,
+     repeats and types. The full schema is published by ISO 20022 and works the same way. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08"
+           targetNamespace="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08"
+           elementFormDefault="qualified">
+  <xs:element name="Document" type="Document"/>
+  <xs:complexType name="Document">
+    <xs:sequence><xs:element name="BkToCstmrStmt" type="BankToCustomerStatementV08"/></xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BankToCustomerStatementV08">
+    <xs:sequence>
+      <xs:element name="GrpHdr" type="GroupHeader81"/>
+      <xs:element name="Stmt" type="AccountStatement9" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="GroupHeader81">
+    <xs:sequence>
+      <xs:element name="MsgId" type="Max35Text"/>
+      <xs:element name="CreDtTm" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AccountStatement9">
+    <xs:sequence>
+      <xs:element name="Id" type="Max35Text"/>
+      <xs:element name="ElctrncSeqNb" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="Acct" type="CashAccount39"/>
+      <xs:element name="Bal" type="CashBalance8" maxOccurs="unbounded"/>
+      <xs:element name="Ntry" type="ReportEntry10" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CashAccount39">
+    <xs:sequence><xs:element name="Id"><xs:complexType><xs:sequence><xs:element name="IBAN" type="Max35Text"/></xs:sequence></xs:complexType></xs:element></xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CashBalance8">
+    <xs:sequence>
+      <xs:element name="Tp"><xs:complexType><xs:sequence><xs:element name="CdOrPrtry"><xs:complexType><xs:sequence><xs:element name="Cd" type="Max35Text"/></xs:sequence></xs:complexType></xs:element></xs:sequence></xs:complexType></xs:element>
+      <xs:element name="Amt" type="ActiveOrHistoricCurrencyAndAmount"/>
+      <xs:element name="CdtDbtInd" type="CreditDebitCode"/>
+      <xs:element name="Dt" type="DateAndDateTime2Choice"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ReportEntry10">
+    <xs:sequence>
+      <xs:element name="NtryRef" type="Max35Text" minOccurs="0"/>
+      <xs:element name="Amt" type="ActiveOrHistoricCurrencyAndAmount"/>
+      <xs:element name="CdtDbtInd" type="CreditDebitCode"/>
+      <xs:element name="RvslInd" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="BookgDt" type="DateAndDateTime2Choice"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DateAndDateTime2Choice">
+    <xs:choice><xs:element name="Dt" type="xs:date"/><xs:element name="DtTm" type="xs:dateTime"/></xs:choice>
+  </xs:complexType>
+  <xs:complexType name="ActiveOrHistoricCurrencyAndAmount">
+    <xs:simpleContent>
+      <xs:extension base="ActiveOrHistoricCurrencyAndAmount_SimpleType">
+        <xs:attribute name="Ccy" type="ActiveOrHistoricCurrencyCode" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="ActiveOrHistoricCurrencyAndAmount_SimpleType">
+    <xs:restriction base="xs:decimal"><xs:fractionDigits value="5"/><xs:totalDigits value="18"/><xs:minInclusive value="0"/></xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ActiveOrHistoricCurrencyCode">
+    <xs:restriction base="xs:string"><xs:pattern value="[A-Z]{3,3}"/></xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CreditDebitCode">
+    <xs:restriction base="xs:string"><xs:enumeration value="CRDT"/><xs:enumeration value="DBIT"/></xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Max35Text">
+    <xs:restriction base="xs:string"><xs:minLength value="1"/><xs:maxLength value="35"/></xs:restriction>
+  </xs:simpleType>
+</xs:schema>

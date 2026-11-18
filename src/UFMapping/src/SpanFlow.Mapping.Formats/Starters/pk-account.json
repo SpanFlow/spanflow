@@ -1,0 +1,32 @@
+{
+  "name": "pk-account",
+  "title": "Country, account, phone, LL reference",
+  "format": "positional",
+  "description": "The positional string example: country 2, account 13, phone 11, then a reference with a 2-digit length in front.",
+  "options": {
+    "layout": {
+      "fields": [
+        {
+          "name": "country",
+          "length": 2,
+          "type": "alpha"
+        },
+        {
+          "name": "account",
+          "length": 13,
+          "type": "numeric"
+        },
+        {
+          "name": "phone",
+          "length": 11,
+          "type": "numeric"
+        },
+        {
+          "name": "reference",
+          "prefix": 2,
+          "type": "alphanumeric"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"Document":{"@xmlns":"urn:iso:std:iso:20022:tech:xsd:pain.001.001.09","CstmrCdtTrfInitn":{"GrpHdr":{"MsgId":"MSG-1","NbOfTxs":"1"},"PmtInf":[{"CdtTrfTxInf":[{"Amt":{"InstdAmt":{"@Ccy":"PKR","#text":"1500.00"}},"Cdtr":{"Nm":"Ali Khan"}}]}]}}}

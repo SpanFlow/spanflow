@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.09">
+  <CstmrCdtTrfInitn>
+    <GrpHdr><MsgId>MSG-1</MsgId><NbOfTxs>1</NbOfTxs></GrpHdr>
+    <PmtInf>
+      <CdtTrfTxInf>
+        <Amt><InstdAmt Ccy="PKR">1500.00</InstdAmt></Amt>
+        <Cdtr><Nm>Ali Khan</Nm></Cdtr>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

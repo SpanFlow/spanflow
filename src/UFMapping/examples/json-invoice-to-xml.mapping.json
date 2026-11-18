@@ -1,0 +1,35 @@
+{
+  "formats": {
+    "output": {
+      "type": "xml",
+      "options": {
+        "root": "Invoice",
+        "indent": true
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "mappings": [
+      {
+        "target": "@number",
+        "type": "fieldCopy",
+        "path": "input.invoice"
+      },
+      {
+        "target": "Customer",
+        "type": "fieldCopy",
+        "path": "input.customer"
+      },
+      {
+        "target": "Line",
+        "type": "foreach",
+        "from": "input.lines[]",
+        "map": {
+          "@item": "item",
+          "Amount": "amount"
+        }
+      }
+    ]
+  }
+}

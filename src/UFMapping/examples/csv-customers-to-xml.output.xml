@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Customers>
+  <Customer id="1">
+    <Name>Ayesha Traders</Name>
+    <City>Lahore</City>
+  </Customer>
+  <Customer id="2">
+    <Name>Khan &amp; Sons</Name>
+    <City>Karachi</City>
+  </Customer>
+</Customers>

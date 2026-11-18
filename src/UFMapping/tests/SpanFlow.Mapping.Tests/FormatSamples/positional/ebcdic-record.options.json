@@ -1,0 +1,22 @@
+{
+  "encoding": "ebcdic",
+  "layout": {
+    "fields": [
+      {
+        "name": "country",
+        "length": 2,
+        "type": "alpha"
+      },
+      {
+        "name": "account",
+        "length": 13,
+        "type": "numeric"
+      },
+      {
+        "name": "holder",
+        "length": 10,
+        "type": "text"
+      }
+    ]
+  }
+}

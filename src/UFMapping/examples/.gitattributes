@@ -1,0 +1,7 @@
+# Format examples are compared byte for byte (line endings): never let git rewrite them.
+*.edi -text
+*.txt -text
+*.csv -text
+*.xml -text
+xml-order-to-json.output.json -text
+log-lines-to-json.output.json -text

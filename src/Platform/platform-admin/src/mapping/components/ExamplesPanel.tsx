@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { ufmappingApi } from '../../lib/ufmappingApi';
 import { X, Play, Download, Save, Trash2, AlertTriangle } from 'lucide-react';
-import { RECIPES, RECIPE_CATEGORIES, type Recipe } from '../examples/recipes';
+import { RECIPES, RECIPE_CATEGORIES, isFormatRecipe, type Recipe } from '../examples/recipes';
+import { FORMAT_RECIPES } from '../examples/formatRecipes';
+import { problemMessage, runMapping } from '../formats/formatsApi';
+import type { FormatSpec } from '../formats/formats';
 import { FUNCTION_USAGE } from '../examples/functionUsage';
 import { FUNCTION_DEFINITIONS } from '../examples/functionDefinitions';
 import { buildExampleGraph } from '../examples/buildGraph';
@@ -49,6 +52,9 @@ const saveUser = (list: Recipe[]) => localStorage.setItem(USER_KEY, JSON.stringi
 
 const pretty = (v: unknown) => JSON.stringify(v, null, 2);
 
+/** Raw text as it is (an XML or EDI sample), anything else as indented JSON. */
+const shown = (v: unknown) => (typeof v === 'string' ? v : pretty(v));
+
 export const ExamplesPanel = ({ onClose }: { onClose: () => void }) => {
   const openInNewTab = useStore((s) => s.openInNewTab);
   const ensureFunction = useStore((s) => s.ensureFunction);
@@ -58,7 +64,7 @@ export const ExamplesPanel = ({ onClose }: { onClose: () => void }) => {
   const sampleInput = useStore((s) => s.sampleInput);
 
   const [userExamples, setUserExamples] = useState<Recipe[]>(loadUser);
-  const all = [...RECIPES, ...FUNCTION_DEFINITIONS, ...FUNCTION_USAGE, ...userExamples];
+  const all = [...RECIPES, ...FORMAT_RECIPES, ...FUNCTION_DEFINITIONS, ...FUNCTION_USAGE, ...userExamples];
   const [selectedId, setSelectedId] = useState(all[0]?.id);
   const selected = all.find((r) => r.id === selectedId) ?? all[0];
 
@@ -67,12 +73,22 @@ export const ExamplesPanel = ({ onClose }: { onClose: () => void }) => {
 
   const categories = [
     ...RECIPE_CATEGORIES,
+    'Formats',
     'Function library',
     'Using functions',
     ...(userExamples.length ? ['My examples'] : []),
   ];
 
   const load = (r: Recipe) => {
+    // E73: a format example opens as its own graph (the formats come back on the Source and Target nodes) with
+    // the raw sample in the Sample Input box; Apply to Input JSON then reads it into the Source fields.
+    if (isFormatRecipe(r)) {
+      const g = dslToGraph(r.dsl);
+      openInNewTab(r.title, g.nodes as AppNode[], g.edges, r.input as string);
+      onClose();
+      return;
+    }
+
     const input = pretty(r.input);
 
     // A "using a function" example: seed the function, then open a mapping
@@ -124,9 +140,18 @@ export const ExamplesPanel = ({ onClose }: { onClose: () => void }) => {
     setRunning(true);
     setRunResult('');
     try {
+      if (isFormatRecipe(r)) {
+        const input = ((r.dsl as { formats?: { input?: FormatSpec } }).formats?.input) ?? { type: 'json' };
+        setRunResult((await runMapping(r.dsl, r.input as string, input)).output);
+        return;
+      }
       const res = await ufmappingApi.post(EXECUTE_PATH, { mapping: r.dsl, inputObject: r.input });
       setRunResult(pretty(res.data));
     } catch (e: any) {
+      if (isFormatRecipe(r)) {
+        setRunResult(`Error: ${problemMessage(e)}`);
+        return;
+      }
       const d = e?.response?.data;
       setRunResult(d ? `Error: ${d.Error ?? d.error ?? pretty(d)}` : `Couldn't reach the mapping engine at ${ufmappingApi.defaults.baseURL}: it may be stopped or restarting. Try again in a few seconds.`);
     } finally {
@@ -253,7 +278,7 @@ export const ExamplesPanel = ({ onClose }: { onClose: () => void }) => {
                 </button>
               </div>
 
-              <DetailBlock title="Input">{pretty(selected.input)}</DetailBlock>
+              <DetailBlock title="Input">{shown(selected.input)}</DetailBlock>
               <DetailBlock title="Mapping (DSL)">{pretty(selected.dsl)}</DetailBlock>
 
               {selected.output !== null &&
@@ -265,7 +290,7 @@ export const ExamplesPanel = ({ onClose }: { onClose: () => void }) => {
                     </div>
                   </div>
                 ) : (
-                  <DetailBlock title="Output">{pretty(selected.output)}</DetailBlock>
+                  <DetailBlock title="Output">{shown(selected.output)}</DetailBlock>
                 ))}
 
               {runResult && <DetailBlock title="Live result">{runResult}</DetailBlock>}

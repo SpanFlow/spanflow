@@ -1,0 +1,82 @@
+{
+  "interchange": {
+    "una": true,
+    "UNB": {
+      "syntax": {
+        "id": "UNOA",
+        "version": "3"
+      },
+      "sender": {
+        "id": "SENDER",
+        "qualifier": "14"
+      },
+      "recipient": {
+        "id": "RECEIVER",
+        "qualifier": "14"
+      },
+      "preparation": {
+        "date": "261117",
+        "time": "1200"
+      },
+      "controlReference": "REF1"
+    },
+    "messages": [
+      {
+        "UNH": {
+          "reference": "1",
+          "type": {
+            "type": "ORDERS",
+            "version": "D",
+            "release": "96A",
+            "agency": "UN"
+          }
+        },
+        "guide": "edifact-orders",
+        "body": {
+          "BGM": {
+            "documentName": {
+              "code": "220"
+            },
+            "documentNumber": "PO123",
+            "messageFunction": "9"
+          },
+          "DTM": [
+            {
+              "period": {
+                "qualifier": "137",
+                "value": "20261117",
+                "format": "102"
+              }
+            }
+          ],
+          "LINLoop": [
+            {
+              "LIN": {
+                "lineNumber": "1",
+                "item": {
+                  "id": "A-1",
+                  "type": "IN"
+                }
+              },
+              "FTX": [
+                {
+                  "subject": "AAI",
+                  "text": {
+                    "line1": "Note with + plus and ' quote"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "problems": [
+          {
+            "segment": 8,
+            "id": "UNS",
+            "problem": "Missing UNS: the guide needs it, found 0."
+          }
+        ]
+      }
+    ]
+  }
+}

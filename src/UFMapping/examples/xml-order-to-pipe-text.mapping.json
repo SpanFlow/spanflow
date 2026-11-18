@@ -1,0 +1,35 @@
+{
+  "formats": {
+    "input": {
+      "type": "xml",
+      "options": {
+        "arrays": [
+          "/Order/Line"
+        ],
+        "types": "infer"
+      }
+    },
+    "output": {
+      "type": "text",
+      "options": {
+        "mode": "delimited",
+        "delimiter": "pipe"
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "mappings": [
+      {
+        "target": "rows",
+        "type": "foreach",
+        "from": "input.Order.Line[]",
+        "map": {
+          "sku": "@sku",
+          "qty": "Qty",
+          "price": "Price"
+        }
+      }
+    ]
+  }
+}

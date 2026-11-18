@@ -1,0 +1,644 @@
+{
+ "name": "x12-850",
+ "standard": "x12",
+ "message": "850",
+ "version": "004010",
+ "title": "Purchase order",
+ "segments": [
+  {
+   "id": "BEG",
+   "min": 1,
+   "elements": [
+    {
+     "name": "purposeCode",
+     "required": true,
+     "type": "id",
+     "min": 2,
+     "max": 2,
+     "codes": [
+      "00",
+      "01",
+      "05",
+      "06",
+      "07"
+     ]
+    },
+    {
+     "name": "typeCode",
+     "required": true,
+     "type": "id",
+     "min": 2,
+     "max": 2
+    },
+    {
+     "name": "poNumber",
+     "required": true,
+     "type": "an",
+     "min": 1,
+     "max": 22
+    },
+    {
+     "name": "releaseNumber",
+     "type": "an",
+     "min": 1,
+     "max": 30
+    },
+    {
+     "name": "date",
+     "required": true,
+     "type": "dt",
+     "min": 8,
+     "max": 8
+    },
+    {
+     "name": "contractNumber",
+     "type": "an",
+     "min": 1,
+     "max": 30
+    }
+   ]
+  },
+  {
+   "id": "CUR",
+   "elements": [
+    {
+     "name": "entityId",
+     "required": true,
+     "type": "id",
+     "min": 2,
+     "max": 3
+    },
+    {
+     "name": "currency",
+     "required": true,
+     "type": "id",
+     "min": 3,
+     "max": 3
+    }
+   ]
+  },
+  {
+   "id": "REF",
+   "max": 99,
+   "elements": [
+    {
+     "name": "qualifier",
+     "required": true,
+     "type": "id",
+     "min": 2,
+     "max": 3
+    },
+    {
+     "name": "value",
+     "type": "an",
+     "min": 1,
+     "max": 30
+    },
+    {
+     "name": "description",
+     "type": "an",
+     "min": 1,
+     "max": 80
+    }
+   ]
+  },
+  {
+   "id": "PER",
+   "max": 3,
+   "elements": [
+    {
+     "name": "contactFunction",
+     "required": true,
+     "type": "id",
+     "min": 2,
+     "max": 2
+    },
+    {
+     "name": "name",
+     "type": "an",
+     "min": 1,
+     "max": 60
+    },
+    {
+     "name": "commQualifier1",
+     "type": "id",
+     "min": 2,
+     "max": 2
+    },
+    {
+     "name": "commNumber1",
+     "type": "an",
+     "min": 1,
+     "max": 80
+    },
+    {
+     "name": "commQualifier2",
+     "type": "id",
+     "min": 2,
+     "max": 2
+    },
+    {
+     "name": "commNumber2",
+     "type": "an",
+     "min": 1,
+     "max": 80
+    }
+   ]
+  },
+  {
+   "id": "DTM",
+   "max": 10,
+   "elements": [
+    {
+     "name": "qualifier",
+     "required": true,
+     "type": "id",
+     "min": 3,
+     "max": 3
+    },
+    {
+     "name": "date",
+     "type": "dt",
+     "min": 8,
+     "max": 8
+    },
+    {
+     "name": "time",
+     "type": "tm",
+     "min": 4,
+     "max": 8
+    }
+   ]
+  },
+  {
+   "id": "TD5",
+   "max": 12,
+   "elements": [
+    {
+     "name": "routingSequence",
+     "type": "id",
+     "min": 1,
+     "max": 2
+    },
+    {
+     "name": "idQualifier",
+     "type": "id",
+     "min": 1,
+     "max": 2
+    },
+    {
+     "name": "carrierId",
+     "type": "an",
+     "min": 2,
+     "max": 80
+    },
+    {
+     "name": "transportMethod",
+     "type": "id",
+     "min": 1,
+     "max": 2
+    },
+    {
+     "name": "routing",
+     "type": "an",
+     "min": 1,
+     "max": 35
+    }
+   ]
+  },
+  {
+   "loop": "N1Loop",
+   "max": 200,
+   "segments": [
+    {
+     "id": "N1",
+     "min": 1,
+     "elements": [
+      {
+       "name": "entityId",
+       "required": true,
+       "type": "id",
+       "min": 2,
+       "max": 3
+      },
+      {
+       "name": "name",
+       "type": "an",
+       "min": 1,
+       "max": 60
+      },
+      {
+       "name": "idQualifier",
+       "type": "id",
+       "min": 1,
+       "max": 2
+      },
+      {
+       "name": "id",
+       "type": "an",
+       "min": 2,
+       "max": 80
+      }
+     ]
+    },
+    {
+     "id": "N2",
+     "max": 2,
+     "elements": [
+      {
+       "name": "name1",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 60
+      },
+      {
+       "name": "name2",
+       "type": "an",
+       "min": 1,
+       "max": 60
+      }
+     ]
+    },
+    {
+     "id": "N3",
+     "max": 2,
+     "elements": [
+      {
+       "name": "address1",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 55
+      },
+      {
+       "name": "address2",
+       "type": "an",
+       "min": 1,
+       "max": 55
+      }
+     ]
+    },
+    {
+     "id": "N4",
+     "elements": [
+      {
+       "name": "city",
+       "type": "an",
+       "min": 2,
+       "max": 30
+      },
+      {
+       "name": "state",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "postalCode",
+       "type": "id",
+       "min": 3,
+       "max": 15
+      },
+      {
+       "name": "country",
+       "type": "id",
+       "min": 2,
+       "max": 3
+      }
+     ]
+    },
+    {
+     "id": "REF",
+     "max": 12,
+     "elements": [
+      {
+       "name": "qualifier",
+       "required": true,
+       "type": "id",
+       "min": 2,
+       "max": 3
+      },
+      {
+       "name": "value",
+       "type": "an",
+       "min": 1,
+       "max": 30
+      },
+      {
+       "name": "description",
+       "type": "an",
+       "min": 1,
+       "max": 80
+      }
+     ]
+    },
+    {
+     "id": "PER",
+     "max": 3,
+     "elements": [
+      {
+       "name": "contactFunction",
+       "required": true,
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "name",
+       "type": "an",
+       "min": 1,
+       "max": 60
+      },
+      {
+       "name": "commQualifier1",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "commNumber1",
+       "type": "an",
+       "min": 1,
+       "max": 80
+      },
+      {
+       "name": "commQualifier2",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "commNumber2",
+       "type": "an",
+       "min": 1,
+       "max": 80
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "loop": "PO1Loop",
+   "min": 1,
+   "max": 100000,
+   "segments": [
+    {
+     "id": "PO1",
+     "min": 1,
+     "elements": [
+      {
+       "name": "lineNumber",
+       "type": "an",
+       "min": 1,
+       "max": 20
+      },
+      {
+       "name": "quantity",
+       "type": "r",
+       "min": 1,
+       "max": 15
+      },
+      {
+       "name": "unit",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "unitPrice",
+       "type": "r",
+       "min": 1,
+       "max": 17
+      },
+      {
+       "name": "basisOfPrice",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "idQualifier1",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "productId1",
+       "type": "an",
+       "min": 1,
+       "max": 48
+      },
+      {
+       "name": "idQualifier2",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "productId2",
+       "type": "an",
+       "min": 1,
+       "max": 48
+      },
+      {
+       "name": "idQualifier3",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "productId3",
+       "type": "an",
+       "min": 1,
+       "max": 48
+      }
+     ]
+    },
+    {
+     "id": "CUR",
+     "elements": [
+      {
+       "name": "entityId",
+       "required": true,
+       "type": "id",
+       "min": 2,
+       "max": 3
+      },
+      {
+       "name": "currency",
+       "required": true,
+       "type": "id",
+       "min": 3,
+       "max": 3
+      }
+     ]
+    },
+    {
+     "loop": "PIDLoop",
+     "max": 1000,
+     "segments": [
+      {
+       "id": "PID",
+       "min": 1,
+       "elements": [
+        {
+         "name": "type",
+         "required": true,
+         "type": "id",
+         "min": 1,
+         "max": 1,
+         "codes": [
+          "F",
+          "S",
+          "X"
+         ]
+        },
+        {
+         "name": "characteristic",
+         "type": "id",
+         "min": 2,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "id",
+         "min": 2,
+         "max": 2
+        },
+        {
+         "name": "descriptionCode",
+         "type": "an",
+         "min": 1,
+         "max": 12
+        },
+        {
+         "name": "description",
+         "type": "an",
+         "min": 1,
+         "max": 80
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "PO4",
+     "elements": [
+      {
+       "name": "pack",
+       "type": "n",
+       "min": 1,
+       "max": 6
+      },
+      {
+       "name": "size",
+       "type": "r",
+       "min": 1,
+       "max": 8
+      },
+      {
+       "name": "unit",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      }
+     ]
+    },
+    {
+     "id": "REF",
+     "max": 12,
+     "elements": [
+      {
+       "name": "qualifier",
+       "required": true,
+       "type": "id",
+       "min": 2,
+       "max": 3
+      },
+      {
+       "name": "value",
+       "type": "an",
+       "min": 1,
+       "max": 30
+      },
+      {
+       "name": "description",
+       "type": "an",
+       "min": 1,
+       "max": 80
+      }
+     ]
+    },
+    {
+     "id": "DTM",
+     "max": 10,
+     "elements": [
+      {
+       "name": "qualifier",
+       "required": true,
+       "type": "id",
+       "min": 3,
+       "max": 3
+      },
+      {
+       "name": "date",
+       "type": "dt",
+       "min": 8,
+       "max": 8
+      },
+      {
+       "name": "time",
+       "type": "tm",
+       "min": 4,
+       "max": 8
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "loop": "CTTLoop",
+   "max": 1,
+   "segments": [
+    {
+     "id": "CTT",
+     "elements": [
+      {
+       "name": "lineCount",
+       "required": true,
+       "type": "n",
+       "min": 1,
+       "max": 6
+      },
+      {
+       "name": "hashTotal",
+       "type": "r",
+       "min": 1,
+       "max": 10
+      }
+     ]
+    },
+    {
+     "id": "AMT",
+     "elements": [
+      {
+       "name": "qualifier",
+       "required": true,
+       "type": "id",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "amount",
+       "required": true,
+       "type": "r",
+       "min": 1,
+       "max": 18
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

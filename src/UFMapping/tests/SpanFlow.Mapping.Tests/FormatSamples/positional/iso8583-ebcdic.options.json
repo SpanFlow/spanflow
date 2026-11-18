@@ -1,0 +1,67 @@
+{
+  "layout": {
+    "fields": [
+      {
+        "name": "mti",
+        "length": 4,
+        "type": "numeric"
+      },
+      {
+        "bitmap": "binary",
+        "fields": [
+          {
+            "bit": 2,
+            "name": "pan",
+            "prefix": 2,
+            "max": 19,
+            "type": "numeric"
+          },
+          {
+            "bit": 3,
+            "name": "processingCode",
+            "length": 6,
+            "type": "numeric"
+          },
+          {
+            "bit": 4,
+            "name": "amountTransaction",
+            "length": 12,
+            "type": "numeric"
+          },
+          {
+            "bit": 7,
+            "name": "transmissionDateTime",
+            "length": 10,
+            "type": "numeric"
+          },
+          {
+            "bit": 11,
+            "name": "stan",
+            "length": 6,
+            "type": "numeric"
+          },
+          {
+            "bit": 41,
+            "name": "cardAcceptorTerminalId",
+            "length": 8,
+            "type": "text"
+          },
+          {
+            "bit": 49,
+            "name": "currencyCodeTransaction",
+            "length": 3,
+            "type": "text"
+          },
+          {
+            "bit": 70,
+            "name": "networkManagementCode",
+            "length": 3,
+            "type": "numeric"
+          }
+        ]
+      }
+    ]
+  },
+  "unit": "bytes",
+  "encoding": "ebcdic"
+}

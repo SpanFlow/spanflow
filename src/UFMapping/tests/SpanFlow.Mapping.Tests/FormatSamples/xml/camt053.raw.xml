@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08">
+  <BkToCstmrStmt>
+    <GrpHdr><MsgId>STMT-20261118</MsgId><CreDtTm>2026-11-18T06:00:00</CreDtTm></GrpHdr>
+    <Stmt>
+      <Id>STMT-1</Id>
+      <ElctrncSeqNb>42</ElctrncSeqNb>
+      <Acct><Id><IBAN>PK36SCBL0000001123456702</IBAN></Id></Acct>
+      <Bal>
+        <Tp><CdOrPrtry><Cd>CLBD</Cd></CdOrPrtry></Tp>
+        <Amt Ccy="PKR">250000.50</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt><Dt>2026-11-17</Dt></Dt>
+      </Bal>
+      <Ntry>
+        <NtryRef>E-001</NtryRef>
+        <Amt Ccy="PKR">1500.00</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <RvslInd>false</RvslInd>
+        <BookgDt><Dt>2026-11-17</Dt></BookgDt>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>

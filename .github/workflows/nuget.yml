@@ -1,5 +1,5 @@
 # Packs one family of SpanFlow's MIT libraries from this repository and pushes it to nuget.org:
-#   mapping     SpanFlow.Mapping.Core, SpanFlow.Mapping.Engine
+#   mapping     SpanFlow.Mapping.Core, SpanFlow.Mapping.Engine, SpanFlow.Mapping.Formats
 #   libraries   SpanFlow.Expressions, SpanFlow.Connectors.Abstractions, .Http, .Files, .Database
 #
 # Run it by hand: Actions > nuget > Run workflow, with the family, the package version and the tag to pack
@@ -65,7 +65,7 @@ jobs:
           case "$FAMILY" in
             mapping)
               echo "TESTS=src/UFMapping/tests/SpanFlow.Mapping.Tests/SpanFlow.Mapping.Tests.csproj" >> "$GITHUB_ENV"
-              echo "PROJECTS=src/UFMapping/src/SpanFlow.Mapping.Core/SpanFlow.Mapping.Core.csproj src/UFMapping/src/SpanFlow.Mapping.Engine/SpanFlow.Mapping.Engine.csproj" >> "$GITHUB_ENV"
+              echo "PROJECTS=src/UFMapping/src/SpanFlow.Mapping.Core/SpanFlow.Mapping.Core.csproj src/UFMapping/src/SpanFlow.Mapping.Engine/SpanFlow.Mapping.Engine.csproj src/UFMapping/src/SpanFlow.Mapping.Formats/SpanFlow.Mapping.Formats.csproj" >> "$GITHUB_ENV"
               ;;
             libraries)
               echo "TESTS=src/DataFlow/libs/tests/SpanFlow.Libraries.Tests/SpanFlow.Libraries.Tests.csproj" >> "$GITHUB_ENV"

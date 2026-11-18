@@ -1,0 +1,20 @@
+{
+  "orderId": "PO-77",
+  "date": "2026-11-18",
+  "customer": {
+    "name": "Ayesha Traders",
+    "city": "Lahore"
+  },
+  "lines": [
+    {
+      "sku": "W-7",
+      "qty": 10,
+      "price": 4.25
+    },
+    {
+      "sku": "K-2",
+      "qty": 3,
+      "price": 19.99
+    }
+  ]
+}

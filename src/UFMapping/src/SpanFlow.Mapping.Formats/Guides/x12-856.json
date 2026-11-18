@@ -1,0 +1,655 @@
+{
+ "name": "x12-856",
+ "standard": "x12",
+ "message": "856",
+ "version": "004010",
+ "title": "Ship notice / manifest",
+ "segments": [
+  {
+   "id": "BSN",
+   "min": 1,
+   "elements": [
+    {
+     "name": "purposeCode",
+     "required": true,
+     "type": "id",
+     "min": 2,
+     "max": 2
+    },
+    {
+     "name": "shipmentId",
+     "required": true,
+     "type": "an",
+     "min": 2,
+     "max": 30
+    },
+    {
+     "name": "date",
+     "required": true,
+     "type": "dt",
+     "min": 8,
+     "max": 8
+    },
+    {
+     "name": "time",
+     "required": true,
+     "type": "tm",
+     "min": 4,
+     "max": 8
+    },
+    {
+     "name": "structureCode",
+     "type": "id",
+     "min": 4,
+     "max": 4
+    }
+   ]
+  },
+  {
+   "id": "DTM",
+   "max": 10,
+   "elements": [
+    {
+     "name": "qualifier",
+     "required": true,
+     "type": "id",
+     "min": 3,
+     "max": 3
+    },
+    {
+     "name": "date",
+     "type": "dt",
+     "min": 8,
+     "max": 8
+    },
+    {
+     "name": "time",
+     "type": "tm",
+     "min": 4,
+     "max": 8
+    }
+   ]
+  },
+  {
+   "loop": "HLLoop",
+   "min": 1,
+   "max": 200000,
+   "segments": [
+    {
+     "id": "HL",
+     "min": 1,
+     "elements": [
+      {
+       "name": "id",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 12
+      },
+      {
+       "name": "parentId",
+       "type": "an",
+       "min": 1,
+       "max": 12
+      },
+      {
+       "name": "levelCode",
+       "required": true,
+       "type": "id",
+       "min": 1,
+       "max": 2,
+       "codes": [
+        "S",
+        "O",
+        "P",
+        "T",
+        "I",
+        "Q",
+        "F"
+       ]
+      },
+      {
+       "name": "childCode",
+       "type": "id",
+       "min": 1,
+       "max": 1,
+       "codes": [
+        "0",
+        "1"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "LIN",
+     "elements": [
+      {
+       "name": "lineNumber",
+       "type": "an",
+       "min": 1,
+       "max": 20
+      },
+      {
+       "name": "idQualifier1",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "productId1",
+       "type": "an",
+       "min": 1,
+       "max": 48
+      },
+      {
+       "name": "idQualifier2",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "productId2",
+       "type": "an",
+       "min": 1,
+       "max": 48
+      },
+      {
+       "name": "idQualifier3",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "productId3",
+       "type": "an",
+       "min": 1,
+       "max": 48
+      }
+     ]
+    },
+    {
+     "id": "SN1",
+     "elements": [
+      {
+       "name": "lineNumber",
+       "type": "an",
+       "min": 1,
+       "max": 20
+      },
+      {
+       "name": "quantity",
+       "required": true,
+       "type": "r",
+       "min": 1,
+       "max": 10
+      },
+      {
+       "name": "unit",
+       "required": true,
+       "type": "id",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "name": "quantityShipped",
+       "type": "r",
+       "min": 1,
+       "max": 15
+      }
+     ]
+    },
+    {
+     "id": "PRF",
+     "elements": [
+      {
+       "name": "poNumber",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 22
+      },
+      {
+       "name": "releaseNumber",
+       "type": "an",
+       "min": 1,
+       "max": 30
+      },
+      {
+       "name": "changeOrderSequence",
+       "type": "an",
+       "min": 1,
+       "max": 8
+      },
+      {
+       "name": "poDate",
+       "type": "dt",
+       "min": 8,
+       "max": 8
+      }
+     ]
+    },
+    {
+     "id": "PO4",
+     "elements": [
+      {
+       "name": "pack",
+       "type": "n",
+       "min": 1,
+       "max": 6
+      },
+      {
+       "name": "size",
+       "type": "r",
+       "min": 1,
+       "max": 8
+      },
+      {
+       "name": "unit",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      }
+     ]
+    },
+    {
+     "loop": "PIDLoop",
+     "max": 1000,
+     "segments": [
+      {
+       "id": "PID",
+       "min": 1,
+       "elements": [
+        {
+         "name": "type",
+         "required": true,
+         "type": "id",
+         "min": 1,
+         "max": 1,
+         "codes": [
+          "F",
+          "S",
+          "X"
+         ]
+        },
+        {
+         "name": "characteristic",
+         "type": "id",
+         "min": 2,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "id",
+         "min": 2,
+         "max": 2
+        },
+        {
+         "name": "descriptionCode",
+         "type": "an",
+         "min": 1,
+         "max": 12
+        },
+        {
+         "name": "description",
+         "type": "an",
+         "min": 1,
+         "max": 80
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "TD1",
+     "max": 20,
+     "elements": [
+      {
+       "name": "packagingCode",
+       "type": "an",
+       "min": 3,
+       "max": 5
+      },
+      {
+       "name": "ladingQuantity",
+       "type": "n",
+       "min": 1,
+       "max": 7
+      },
+      {
+       "name": "commodityQualifier",
+       "type": "id",
+       "min": 1,
+       "max": 1
+      },
+      {
+       "name": "commodityCode",
+       "type": "an",
+       "min": 1,
+       "max": 30
+      },
+      {
+       "name": "description",
+       "type": "an",
+       "min": 1,
+       "max": 50
+      },
+      {
+       "name": "weightQualifier",
+       "type": "id",
+       "min": 1,
+       "max": 2
+      },
+      {
+       "name": "weight",
+       "type": "r",
+       "min": 1,
+       "max": 10
+      },
+      {
+       "name": "weightUnit",
+       "type": "id",
+       "min": 2,
+       "max": 2
+      }
+     ]
+    },
+    {
+     "id": "TD5",
+     "max": 12,
+     "elements": [
+      {
+       "name": "routingSequence",
+       "type": "id",
+       "min": 1,
+       "max": 2
+      },
+      {
+       "name": "idQualifier",
+       "type": "id",
+       "min": 1,
+       "max": 2
+      },
+      {
+       "name": "carrierId",
+       "type": "an",
+       "min": 2,
+       "max": 80
+      },
+      {
+       "name": "transportMethod",
+       "type": "id",
+       "min": 1,
+       "max": 2
+      },
+      {
+       "name": "routing",
+       "type": "an",
+       "min": 1,
+       "max": 35
+      }
+     ]
+    },
+    {
+     "id": "REF",
+     "max": 200,
+     "elements": [
+      {
+       "name": "qualifier",
+       "required": true,
+       "type": "id",
+       "min": 2,
+       "max": 3
+      },
+      {
+       "name": "value",
+       "type": "an",
+       "min": 1,
+       "max": 30
+      },
+      {
+       "name": "description",
+       "type": "an",
+       "min": 1,
+       "max": 80
+      }
+     ]
+    },
+    {
+     "id": "DTM",
+     "max": 10,
+     "elements": [
+      {
+       "name": "qualifier",
+       "required": true,
+       "type": "id",
+       "min": 3,
+       "max": 3
+      },
+      {
+       "name": "date",
+       "type": "dt",
+       "min": 8,
+       "max": 8
+      },
+      {
+       "name": "time",
+       "type": "tm",
+       "min": 4,
+       "max": 8
+      }
+     ]
+    },
+    {
+     "loop": "N1Loop",
+     "max": 200,
+     "segments": [
+      {
+       "id": "N1",
+       "min": 1,
+       "elements": [
+        {
+         "name": "entityId",
+         "required": true,
+         "type": "id",
+         "min": 2,
+         "max": 3
+        },
+        {
+         "name": "name",
+         "type": "an",
+         "min": 1,
+         "max": 60
+        },
+        {
+         "name": "idQualifier",
+         "type": "id",
+         "min": 1,
+         "max": 2
+        },
+        {
+         "name": "id",
+         "type": "an",
+         "min": 2,
+         "max": 80
+        }
+       ]
+      },
+      {
+       "id": "N2",
+       "max": 2,
+       "elements": [
+        {
+         "name": "name1",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 60
+        },
+        {
+         "name": "name2",
+         "type": "an",
+         "min": 1,
+         "max": 60
+        }
+       ]
+      },
+      {
+       "id": "N3",
+       "max": 2,
+       "elements": [
+        {
+         "name": "address1",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 55
+        },
+        {
+         "name": "address2",
+         "type": "an",
+         "min": 1,
+         "max": 55
+        }
+       ]
+      },
+      {
+       "id": "N4",
+       "elements": [
+        {
+         "name": "city",
+         "type": "an",
+         "min": 2,
+         "max": 30
+        },
+        {
+         "name": "state",
+         "type": "id",
+         "min": 2,
+         "max": 2
+        },
+        {
+         "name": "postalCode",
+         "type": "id",
+         "min": 3,
+         "max": 15
+        },
+        {
+         "name": "country",
+         "type": "id",
+         "min": 2,
+         "max": 3
+        }
+       ]
+      },
+      {
+       "id": "REF",
+       "max": 12,
+       "elements": [
+        {
+         "name": "qualifier",
+         "required": true,
+         "type": "id",
+         "min": 2,
+         "max": 3
+        },
+        {
+         "name": "value",
+         "type": "an",
+         "min": 1,
+         "max": 30
+        },
+        {
+         "name": "description",
+         "type": "an",
+         "min": 1,
+         "max": 80
+        }
+       ]
+      },
+      {
+       "id": "PER",
+       "max": 3,
+       "elements": [
+        {
+         "name": "contactFunction",
+         "required": true,
+         "type": "id",
+         "min": 2,
+         "max": 2
+        },
+        {
+         "name": "name",
+         "type": "an",
+         "min": 1,
+         "max": 60
+        },
+        {
+         "name": "commQualifier1",
+         "type": "id",
+         "min": 2,
+         "max": 2
+        },
+        {
+         "name": "commNumber1",
+         "type": "an",
+         "min": 1,
+         "max": 80
+        },
+        {
+         "name": "commQualifier2",
+         "type": "id",
+         "min": 2,
+         "max": 2
+        },
+        {
+         "name": "commNumber2",
+         "type": "an",
+         "min": 1,
+         "max": 80
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "MAN",
+     "max": 999,
+     "elements": [
+      {
+       "name": "qualifier",
+       "required": true,
+       "type": "id",
+       "min": 1,
+       "max": 2
+      },
+      {
+       "name": "marks",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 48
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "CTT",
+   "elements": [
+    {
+     "name": "lineCount",
+     "required": true,
+     "type": "n",
+     "min": 1,
+     "max": 6
+    },
+    {
+     "name": "hashTotal",
+     "type": "r",
+     "min": 1,
+     "max": 10
+    }
+   ]
+  }
+ ]
+}

@@ -6,7 +6,7 @@
 # then open http://localhost:8080. Every endpoint is open, so put it behind your own authentication (a reverse
 # proxy, a VPN) before exposing it beyond your machine.
 #
-# Build context: this repository (Core, Engine, Designer.Api). The UI comes from platform-admin, passed as the
+# Build context: this repository (Core, Engine, Formats, Designer.Api). The UI comes from platform-admin, passed as the
 # named context "admin", because the mapping designer UI lives there (the Studio's Mapping tab) and this image
 # builds its standalone page (vite.mapping.config.ts):
 #
@@ -28,7 +28,7 @@ RUN npx vite build -c vite.mapping.config.ts
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS api
 WORKDIR /src
 COPY . .
-# PlatformIntegration=false: the standalone build references only Core and Engine (no Platform.Client).
+# PlatformIntegration=false: the standalone build references only Core, Engine and Formats (no Platform.Client).
 # BuildFrontend=false: the UI comes from the stage above, not the legacy maplite-designer.
 RUN dotnet publish src/SpanFlow.Mapping.Designer.Api/SpanFlow.Mapping.Designer.Api.csproj \
     -c Release -o /app -p:PlatformIntegration=false -p:BuildFrontend=false

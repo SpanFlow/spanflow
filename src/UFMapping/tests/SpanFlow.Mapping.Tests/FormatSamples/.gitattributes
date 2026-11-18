@@ -1,0 +1,2 @@
+# Samples are compared byte for byte (line endings, BOMs, separators): never let git rewrite them.
+* -text

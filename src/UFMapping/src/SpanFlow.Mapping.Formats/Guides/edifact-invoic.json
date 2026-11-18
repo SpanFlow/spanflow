@@ -1,0 +1,1583 @@
+{
+ "name": "edifact-invoic",
+ "standard": "edifact",
+ "message": "INVOIC",
+ "version": "D96A",
+ "title": "Invoice",
+ "segments": [
+  {
+   "id": "BGM",
+   "min": 1,
+   "elements": [
+    {
+     "name": "documentName",
+     "components": [
+      {
+       "name": "code",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "codeList",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "agency",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "name",
+       "type": "an",
+       "min": 1,
+       "max": 35
+      }
+     ]
+    },
+    {
+     "name": "documentNumber",
+     "type": "an",
+     "min": 1,
+     "max": 35
+    },
+    {
+     "name": "messageFunction",
+     "type": "an",
+     "min": 1,
+     "max": 3
+    },
+    {
+     "name": "responseType",
+     "type": "an",
+     "min": 1,
+     "max": 3
+    }
+   ]
+  },
+  {
+   "id": "DTM",
+   "min": 1,
+   "max": 35,
+   "elements": [
+    {
+     "name": "period",
+     "required": true,
+     "components": [
+      {
+       "name": "qualifier",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "value",
+       "type": "an",
+       "min": 1,
+       "max": 35
+      },
+      {
+       "name": "format",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FTX",
+   "max": 99,
+   "elements": [
+    {
+     "name": "subject",
+     "required": true,
+     "type": "an",
+     "min": 1,
+     "max": 3
+    },
+    {
+     "name": "function",
+     "type": "an",
+     "min": 1,
+     "max": 3
+    },
+    {
+     "name": "reference",
+     "components": [
+      {
+       "name": "code",
+       "type": "an",
+       "min": 1,
+       "max": 17
+      },
+      {
+       "name": "codeList",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "agency",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      }
+     ]
+    },
+    {
+     "name": "text",
+     "components": [
+      {
+       "name": "line1",
+       "type": "an",
+       "min": 1,
+       "max": 70
+      },
+      {
+       "name": "line2",
+       "type": "an",
+       "min": 1,
+       "max": 70
+      },
+      {
+       "name": "line3",
+       "type": "an",
+       "min": 1,
+       "max": 70
+      },
+      {
+       "name": "line4",
+       "type": "an",
+       "min": 1,
+       "max": 70
+      },
+      {
+       "name": "line5",
+       "type": "an",
+       "min": 1,
+       "max": 70
+      }
+     ]
+    },
+    {
+     "name": "language",
+     "type": "an",
+     "min": 1,
+     "max": 3
+    }
+   ]
+  },
+  {
+   "loop": "RFFLoop",
+   "max": 99,
+   "segments": [
+    {
+     "id": "RFF",
+     "min": 1,
+     "elements": [
+      {
+       "name": "reference",
+       "required": true,
+       "components": [
+        {
+         "name": "qualifier",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "number",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "lineNumber",
+         "type": "an",
+         "min": 1,
+         "max": 6
+        },
+        {
+         "name": "version",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "DTM",
+     "max": 5,
+     "elements": [
+      {
+       "name": "period",
+       "required": true,
+       "components": [
+        {
+         "name": "qualifier",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "value",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "format",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "loop": "NADLoop",
+   "max": 99,
+   "segments": [
+    {
+     "id": "NAD",
+     "min": 1,
+     "elements": [
+      {
+       "name": "partyQualifier",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "partyId",
+       "components": [
+        {
+         "name": "id",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "codeList",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      },
+      {
+       "name": "nameAddress",
+       "components": [
+        {
+         "name": "line1",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "line2",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "line3",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "line4",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "line5",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        }
+       ]
+      },
+      {
+       "name": "partyName",
+       "components": [
+        {
+         "name": "name1",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "name2",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "name3",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "name4",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "name5",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "format",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      },
+      {
+       "name": "street",
+       "components": [
+        {
+         "name": "line1",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "line2",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "line3",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "line4",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        }
+       ]
+      },
+      {
+       "name": "city",
+       "type": "an",
+       "min": 1,
+       "max": 35
+      },
+      {
+       "name": "countrySubEntity",
+       "type": "an",
+       "min": 1,
+       "max": 9
+      },
+      {
+       "name": "postalCode",
+       "type": "an",
+       "min": 1,
+       "max": 9
+      },
+      {
+       "name": "country",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      }
+     ]
+    },
+    {
+     "loop": "RFFLoop",
+     "max": 10,
+     "segments": [
+      {
+       "id": "RFF",
+       "min": 1,
+       "elements": [
+        {
+         "name": "reference",
+         "required": true,
+         "components": [
+          {
+           "name": "qualifier",
+           "required": true,
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "number",
+           "type": "an",
+           "min": 1,
+           "max": 35
+          },
+          {
+           "name": "lineNumber",
+           "type": "an",
+           "min": 1,
+           "max": 6
+          },
+          {
+           "name": "version",
+           "type": "an",
+           "min": 1,
+           "max": 35
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "DTM",
+       "max": 5,
+       "elements": [
+        {
+         "name": "period",
+         "required": true,
+         "components": [
+          {
+           "name": "qualifier",
+           "required": true,
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "value",
+           "type": "an",
+           "min": 1,
+           "max": 35
+          },
+          {
+           "name": "format",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "loop": "CTALoop",
+     "max": 5,
+     "segments": [
+      {
+       "id": "CTA",
+       "min": 1,
+       "elements": [
+        {
+         "name": "function",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "contact",
+         "components": [
+          {
+           "name": "id",
+           "type": "an",
+           "min": 1,
+           "max": 17
+          },
+          {
+           "name": "name",
+           "type": "an",
+           "min": 1,
+           "max": 35
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "COM",
+       "max": 5,
+       "elements": [
+        {
+         "name": "communication",
+         "required": true,
+         "components": [
+          {
+           "name": "number",
+           "required": true,
+           "type": "an",
+           "min": 1,
+           "max": 512
+          },
+          {
+           "name": "qualifier",
+           "required": true,
+           "type": "an",
+           "min": 1,
+           "max": 3
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "loop": "CUXLoop",
+   "max": 5,
+   "segments": [
+    {
+     "id": "CUX",
+     "min": 1,
+     "elements": [
+      {
+       "name": "currency",
+       "components": [
+        {
+         "name": "qualifier",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "code",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "type",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "rateBase",
+         "type": "an",
+         "min": 1,
+         "max": 4
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "loop": "PATLoop",
+   "max": 10,
+   "segments": [
+    {
+     "id": "PAT",
+     "min": 1,
+     "elements": [
+      {
+       "name": "type",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "terms",
+       "components": [
+        {
+         "name": "id",
+         "type": "an",
+         "min": 1,
+         "max": 17
+        },
+        {
+         "name": "codeList",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "description1",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "description2",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        }
+       ]
+      },
+      {
+       "name": "period",
+       "components": [
+        {
+         "name": "reference",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "relation",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "unit",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "count",
+         "type": "n",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "DTM",
+     "max": 5,
+     "elements": [
+      {
+       "name": "period",
+       "required": true,
+       "components": [
+        {
+         "name": "qualifier",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "value",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "format",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "loop": "LINLoop",
+   "max": 9999999,
+   "segments": [
+    {
+     "id": "LIN",
+     "min": 1,
+     "elements": [
+      {
+       "name": "lineNumber",
+       "type": "an",
+       "min": 1,
+       "max": 6
+      },
+      {
+       "name": "actionCode",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "item",
+       "components": [
+        {
+         "name": "id",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "type",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "codeList",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "PIA",
+     "max": 25,
+     "elements": [
+      {
+       "name": "function",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "itemId",
+       "required": true,
+       "components": [
+        {
+         "name": "id",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "type",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "codeList",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "IMD",
+     "max": 99,
+     "elements": [
+      {
+       "name": "format",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "characteristic",
+       "components": [
+        {
+         "name": "code",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "codeList",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      },
+      {
+       "name": "description",
+       "components": [
+        {
+         "name": "code",
+         "type": "an",
+         "min": 1,
+         "max": 17
+        },
+        {
+         "name": "codeList",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "text1",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "text2",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "language",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "QTY",
+     "max": 99,
+     "elements": [
+      {
+       "name": "quantity",
+       "required": true,
+       "components": [
+        {
+         "name": "qualifier",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "value",
+         "required": true,
+         "type": "n",
+         "min": 1,
+         "max": 15
+        },
+        {
+         "name": "unit",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "DTM",
+     "max": 35,
+     "elements": [
+      {
+       "name": "period",
+       "required": true,
+       "components": [
+        {
+         "name": "qualifier",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "value",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        },
+        {
+         "name": "format",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "FTX",
+     "max": 99,
+     "elements": [
+      {
+       "name": "subject",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "function",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "reference",
+       "components": [
+        {
+         "name": "code",
+         "type": "an",
+         "min": 1,
+         "max": 17
+        },
+        {
+         "name": "codeList",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      },
+      {
+       "name": "text",
+       "components": [
+        {
+         "name": "line1",
+         "type": "an",
+         "min": 1,
+         "max": 70
+        },
+        {
+         "name": "line2",
+         "type": "an",
+         "min": 1,
+         "max": 70
+        },
+        {
+         "name": "line3",
+         "type": "an",
+         "min": 1,
+         "max": 70
+        },
+        {
+         "name": "line4",
+         "type": "an",
+         "min": 1,
+         "max": 70
+        },
+        {
+         "name": "line5",
+         "type": "an",
+         "min": 1,
+         "max": 70
+        }
+       ]
+      },
+      {
+       "name": "language",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      }
+     ]
+    },
+    {
+     "id": "MOA",
+     "max": 25,
+     "elements": [
+      {
+       "name": "amount",
+       "required": true,
+       "components": [
+        {
+         "name": "qualifier",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "value",
+         "type": "r",
+         "min": 1,
+         "max": 18
+        },
+        {
+         "name": "currency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "currencyQualifier",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "loop": "PRILoop",
+     "max": 25,
+     "segments": [
+      {
+       "id": "PRI",
+       "min": 1,
+       "elements": [
+        {
+         "name": "price",
+         "components": [
+          {
+           "name": "qualifier",
+           "required": true,
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "amount",
+           "type": "r",
+           "min": 1,
+           "max": 15
+          },
+          {
+           "name": "type",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "basis",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "basisQuantity",
+           "type": "n",
+           "min": 1,
+           "max": 9
+          },
+          {
+           "name": "unit",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "loop": "RFFLoop",
+     "max": 10,
+     "segments": [
+      {
+       "id": "RFF",
+       "min": 1,
+       "elements": [
+        {
+         "name": "reference",
+         "required": true,
+         "components": [
+          {
+           "name": "qualifier",
+           "required": true,
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "number",
+           "type": "an",
+           "min": 1,
+           "max": 35
+          },
+          {
+           "name": "lineNumber",
+           "type": "an",
+           "min": 1,
+           "max": 6
+          },
+          {
+           "name": "version",
+           "type": "an",
+           "min": 1,
+           "max": 35
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "DTM",
+       "max": 5,
+       "elements": [
+        {
+         "name": "period",
+         "required": true,
+         "components": [
+          {
+           "name": "qualifier",
+           "required": true,
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "value",
+           "type": "an",
+           "min": 1,
+           "max": 35
+          },
+          {
+           "name": "format",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "loop": "TAXLoop",
+     "max": 99,
+     "segments": [
+      {
+       "id": "TAX",
+       "min": 1,
+       "elements": [
+        {
+         "name": "function",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "type",
+         "components": [
+          {
+           "name": "code",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "codeList",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "agency",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "description",
+           "type": "an",
+           "min": 1,
+           "max": 35
+          }
+         ]
+        },
+        {
+         "name": "account",
+         "components": [
+          {
+           "name": "code",
+           "required": true,
+           "type": "an",
+           "min": 1,
+           "max": 6
+          },
+          {
+           "name": "codeList",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "agency",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          }
+         ]
+        },
+        {
+         "name": "assessmentBasis",
+         "type": "an",
+         "min": 1,
+         "max": 15
+        },
+        {
+         "name": "detail",
+         "components": [
+          {
+           "name": "rateId",
+           "type": "an",
+           "min": 1,
+           "max": 7
+          },
+          {
+           "name": "codeList",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "agency",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "rate",
+           "type": "an",
+           "min": 1,
+           "max": 17
+          }
+         ]
+        },
+        {
+         "name": "category",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      },
+      {
+       "id": "MOA",
+       "elements": [
+        {
+         "name": "amount",
+         "required": true,
+         "components": [
+          {
+           "name": "qualifier",
+           "required": true,
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "value",
+           "type": "r",
+           "min": 1,
+           "max": 18
+          },
+          {
+           "name": "currency",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          },
+          {
+           "name": "currencyQualifier",
+           "type": "an",
+           "min": 1,
+           "max": 3
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "UNS",
+   "min": 1,
+   "elements": [
+    {
+     "name": "sectionId",
+     "required": true,
+     "type": "an",
+     "min": 1,
+     "max": 1,
+     "codes": [
+      "D",
+      "S"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "CNT",
+   "max": 10,
+   "elements": [
+    {
+     "name": "control",
+     "required": true,
+     "components": [
+      {
+       "name": "qualifier",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "value",
+       "required": true,
+       "type": "n",
+       "min": 1,
+       "max": 18
+      },
+      {
+       "name": "unit",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "MOA",
+   "min": 1,
+   "max": 100,
+   "elements": [
+    {
+     "name": "amount",
+     "required": true,
+     "components": [
+      {
+       "name": "qualifier",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "value",
+       "type": "r",
+       "min": 1,
+       "max": 18
+      },
+      {
+       "name": "currency",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "currencyQualifier",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "loop": "TAXLoop",
+   "max": 99,
+   "segments": [
+    {
+     "id": "TAX",
+     "min": 1,
+     "elements": [
+      {
+       "name": "function",
+       "required": true,
+       "type": "an",
+       "min": 1,
+       "max": 3
+      },
+      {
+       "name": "type",
+       "components": [
+        {
+         "name": "code",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "codeList",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "description",
+         "type": "an",
+         "min": 1,
+         "max": 35
+        }
+       ]
+      },
+      {
+       "name": "account",
+       "components": [
+        {
+         "name": "code",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 6
+        },
+        {
+         "name": "codeList",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      },
+      {
+       "name": "assessmentBasis",
+       "type": "an",
+       "min": 1,
+       "max": 15
+      },
+      {
+       "name": "detail",
+       "components": [
+        {
+         "name": "rateId",
+         "type": "an",
+         "min": 1,
+         "max": 7
+        },
+        {
+         "name": "codeList",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "agency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "rate",
+         "type": "an",
+         "min": 1,
+         "max": 17
+        }
+       ]
+      },
+      {
+       "name": "category",
+       "type": "an",
+       "min": 1,
+       "max": 3
+      }
+     ]
+    },
+    {
+     "id": "MOA",
+     "elements": [
+      {
+       "name": "amount",
+       "required": true,
+       "components": [
+        {
+         "name": "qualifier",
+         "required": true,
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "value",
+         "type": "r",
+         "min": 1,
+         "max": 18
+        },
+        {
+         "name": "currency",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        },
+        {
+         "name": "currencyQualifier",
+         "type": "an",
+         "min": 1,
+         "max": 3
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

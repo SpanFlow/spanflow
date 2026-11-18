@@ -27,6 +27,10 @@ else
 StandaloneDesigner.AddServices(builder);
 
 builder.Services.AddSingleton<MappingEngine>();
+// E73: decode, run the engine, encode. One registry of formats, the same the pipelines and the hosted API use.
+builder.Services.AddSingleton(SpanFlow.Mapping.Formats.FormatRegistry.CreateDefault());
+builder.Services.AddSingleton(sp => new SpanFlow.Mapping.Formats.MappingRunner(
+    sp.GetRequiredService<MappingEngine>(), sp.GetRequiredService<SpanFlow.Mapping.Formats.FormatRegistry>()));
 
 // Appear in DataFlow's instance registry (E28-T3), so the ops view can show this process and the
 // resolver can choose between several of them. Off unless both the URL and the secret are set — a

@@ -24,6 +24,7 @@ import { dslToGraph } from '../nodes/decompile';
 import type { FunctionMap } from '../nodes/compile';
 import { FUNCTION_EXAMPLES } from '../nodes/function/functionExamples';
 import { TRACE_PATH } from '../config';
+import { inputFormatOf, isJsonType } from '../formats/formats';
 import type { NodeGroup } from '../../components/canvas/groups/nodeGroups';
 
 export type AppNode = Node;
@@ -119,7 +120,11 @@ interface AppState {
   setGroups: (groups: NodeGroup[]) => void;
   setSampleInput: (text: string) => void;
   loadGraph: (nodes: AppNode[], edges: Edge[], sampleInput?: string, groups?: NodeGroup[]) => void;
-  importSource: (text: string) => void;
+  /**
+   * Build the Source node's fields from a sample. With `decoded` (E73: a non-JSON sample read by its format), the
+   * fields come from that JSON and the sample box keeps the raw text; otherwise the text is parsed as JSON.
+   */
+  importSource: (text: string, decoded?: unknown) => void;
   importTarget: (text: string) => void;
   pushHistory: () => void;
   undo: () => void;
@@ -478,12 +483,18 @@ export const useStore = create<AppState>((set, get) => ({
   // each node can show what it received/produced when run on the sample input.
   runDebug: async () => {
     const { nodes, edges, sampleInput } = get();
-    let inputObject: unknown;
-    try {
-      inputObject = JSON.parse(sampleInput);
-    } catch {
-      set({ debug: { active: true, running: false, results: {}, inspectNodeId: null } });
-      return;
+    // E73: a non-JSON sample goes as text with its format; the service decodes it once for every probe.
+    const inputFormat = inputFormatOf(nodes);
+    let input: Record<string, unknown>;
+    if (isJsonType(inputFormat)) {
+      try {
+        input = { inputObject: JSON.parse(sampleInput) };
+      } catch {
+        set({ debug: { active: true, running: false, results: {}, inspectNodeId: null } });
+        return;
+      }
+    } else {
+      input = { rawInput: sampleInput, inputFormat };
     }
 
     // kind: 'target' (whole result), 'array' (per-item foreach probe → [{value}]), 'object' ({value}).
@@ -499,7 +510,7 @@ export const useStore = create<AppState>((set, get) => ({
     set({ debug: { active: true, running: true, results: {}, inspectNodeId: null } });
     try {
       const res = await ufmappingApi.post(TRACE_PATH, {
-        inputObject,
+        ...input,
         probes: probes.map((p) => ({ id: p.id, mapping: p.mapping })),
       });
       const kindOf = new Map(probes.map((p) => [p.id, p.kind]));
@@ -519,8 +530,8 @@ export const useStore = create<AppState>((set, get) => ({
   },
 
   // Build the Source structure from a sample document and use it as the input.
-  importSource: (text) => {
-    const json = JSON.parse(text);
+  importSource: (text, decoded) => {
+    const json = decoded !== undefined ? decoded : JSON.parse(text);
     const { fields, lists, types, rootArray } = inferStructure(json);
     get().pushHistory();
     const nodes = get().nodes;
@@ -529,7 +540,7 @@ export const useStore = create<AppState>((set, get) => ({
     const nextNodes = src
       ? nodes.map((n) => (n.id === src.id ? { ...n, data: { ...n.data, ...data } } : n))
       : [{ id: uuidv4(), type: 'source', position: { x: 60, y: 80 }, data } as AppNode, ...nodes];
-    set({ nodes: nextNodes, sampleInput: JSON.stringify(json, null, 2), fitNonce: get().fitNonce + 1 });
+    set({ nodes: nextNodes, sampleInput: decoded !== undefined ? text : JSON.stringify(json, null, 2), fitNonce: get().fitNonce + 1 });
   },
 
   // Build the Target structure from a sample of the desired output.

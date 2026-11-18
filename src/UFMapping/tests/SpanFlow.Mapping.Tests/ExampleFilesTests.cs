@@ -16,10 +16,19 @@ public class ExampleFilesTests
         var data = new TheoryData<string>();
         foreach (var file in Directory.GetFiles(ExamplesDir, "*.output.json"))
         {
-            data.Add(Path.GetFileName(file)[..^".output.json".Length]);
+            var name = Path.GetFileName(file)[..^".output.json".Length];
+            if (!IsFormatExample(name)) data.Add(name);
         }
         return data;
     }
+
+    /// <summary>
+    /// E73: an example runs through MappingRunner when its mapping has a formats block or its input is not JSON;
+    /// otherwise it is a plain engine example (JSON in, JSON out, compared as JSON).
+    /// </summary>
+    private static bool IsFormatExample(string name) =>
+        !File.Exists(Path.Combine(ExamplesDir, $"{name}.input.json"))
+        || JsonNode.Parse(File.ReadAllText(Path.Combine(ExamplesDir, $"{name}.mapping.json")))?["formats"] is not null;
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -38,6 +47,41 @@ public class ExampleFilesTests
 #else
         Assert.Equal(expected.ToJsonString(), actual.ToJsonString());
 #endif
+    }
+
+    /// <summary>E73: examples whose output is another format (an EDI 997 ...): raw input in, through MappingRunner, raw output out.</summary>
+    public static TheoryData<string> FormatExamples()
+    {
+        var data = new TheoryData<string>();
+        foreach (var file in Directory.GetFiles(ExamplesDir, "*.output.*"))
+        {
+            var fileName = Path.GetFileName(file);
+            var name = fileName.Substring(0, fileName.IndexOf(".output.", StringComparison.Ordinal));
+            if (IsFormatExample(name)) data.Add(name);
+        }
+        return data;
+    }
+
+    /// <summary>
+    /// Raw input in, through MappingRunner, raw output out, compared as text. <c>EXAMPLES_REGEN=1</c> records the
+    /// output instead (then read the diff: the recorded file is what the docs quote).
+    /// </summary>
+    [Theory]
+    [MemberData(nameof(FormatExamples))]
+    public void FormatExample_ProducesItsRecordedOutput(string name)
+    {
+        var mapping = TestSupport.Mapping(File.ReadAllText(Path.Combine(ExamplesDir, $"{name}.mapping.json")));
+        var input = File.ReadAllBytes(Directory.GetFiles(ExamplesDir, $"{name}.input.*").Single());
+        var outputFile = Directory.GetFiles(ExamplesDir, $"{name}.output.*").Single();
+
+        var result = new SpanFlow.Mapping.Formats.MappingRunner().Run(mapping, SpanFlow.Mapping.Formats.FormatPayload.FromBytes(input));
+
+        if (Environment.GetEnvironmentVariable("EXAMPLES_REGEN") == "1")
+        {
+            File.WriteAllText(outputFile, result.OutputText);
+            return;
+        }
+        Assert.Equal(File.ReadAllText(outputFile), result.OutputText);
     }
 
 #if NETFRAMEWORK

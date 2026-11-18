@@ -1,0 +1,20 @@
+{
+  "events": [
+    {
+      "at": "09:30:12",
+      "level": "ERROR",
+      "text": "disk full on /data"
+    },
+    {
+      "at": "09:31:40",
+      "level": "INFO",
+      "text": "backup started"
+    }
+  ],
+  "skipped": [
+    {
+      "line": 3,
+      "text": "not a log line"
+    }
+  ]
+}

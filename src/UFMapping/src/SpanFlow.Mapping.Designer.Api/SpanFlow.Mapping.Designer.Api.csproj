@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SpanFlow.Mapping.Engine\SpanFlow.Mapping.Engine.csproj" />
     <ProjectReference Include="..\SpanFlow.Mapping.Core\SpanFlow.Mapping.Core.csproj" />
+    <ProjectReference Include="..\SpanFlow.Mapping.Formats\SpanFlow.Mapping.Formats.csproj" />
   </ItemGroup>
 
   <!-- Platform control plane client (sibling repo): single login, API keys, dynamic CORS, consumption

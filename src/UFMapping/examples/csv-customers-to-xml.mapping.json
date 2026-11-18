@@ -1,0 +1,32 @@
+{
+  "formats": {
+    "input": {
+      "type": "text",
+      "options": {
+        "mode": "delimited"
+      }
+    },
+    "output": {
+      "type": "xml",
+      "options": {
+        "root": "Customers",
+        "indent": true
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "mappings": [
+      {
+        "target": "Customer",
+        "type": "foreach",
+        "from": "input.rows[]",
+        "map": {
+          "@id": "id",
+          "Name": "name",
+          "City": "city"
+        }
+      }
+    ]
+  }
+}

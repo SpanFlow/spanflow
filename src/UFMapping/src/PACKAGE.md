@@ -8,6 +8,7 @@ transform node and visual mapping designer.
 |---|---|
 | `SpanFlow.Mapping.Core` | The mapping definition model and its validator |
 | `SpanFlow.Mapping.Engine` | `MappingEngine`, which runs a definition over JSON input |
+| `SpanFlow.Mapping.Formats` | `MappingRunner`: reads the raw input into JSON, runs the engine, writes the output format: json, xml (optionally shaped and typed by an XSD, with validation), text (whole, lines, CSV/delimited, regex pattern, fixed width), positional layouts (fixed, LL/LLL prefixes, records, ISO 8583 bitmaps; bundled ISO 8583:1987 starter layouts) and EDI (X12, EDIFACT; level 2 guides with named segments, loops and a problem report; bundled 850, 810, 856, 997, ORDERS, INVOIC, DESADV); any code page incl. EBCDIC |
 
 Targets .NET 8, 9 and 10, plus .NET Standard 2.0 (which includes .NET Framework 4.6.2+).
 

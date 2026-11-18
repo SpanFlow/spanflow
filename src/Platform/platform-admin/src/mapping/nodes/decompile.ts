@@ -349,5 +349,10 @@ export function dslToGraph(dsl: any): { nodes: Node[]; edges: Edge[] } {
   const builder = new Builder();
   for (const rule of dsl?.target?.mappings ?? []) builder.buildRule(rule);
   builder.finish();
-  return { nodes: builder.nodes, edges: builder.edges };
+  // E73: the definition's formats go back on the nodes that own them (input on Source, output on Target).
+  const nodes = builder.nodes.map((n) => {
+    const format = n.type === 'source' ? dsl?.formats?.input : n.type === 'target' ? dsl?.formats?.output : undefined;
+    return format ? { ...n, data: { ...n.data, format } } : n;
+  });
+  return { nodes, edges: builder.edges };
 }

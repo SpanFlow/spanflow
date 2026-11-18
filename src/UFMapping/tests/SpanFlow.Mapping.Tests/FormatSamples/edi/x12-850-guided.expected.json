@@ -1,0 +1,77 @@
+{
+  "interchange": {
+    "separators": {
+      "component": ">"
+    },
+    "ISA": {
+      "authorizationQualifier": "00",
+      "securityQualifier": "00",
+      "senderQualifier": "ZZ",
+      "senderId": "SENDERID",
+      "receiverQualifier": "ZZ",
+      "receiverId": "RECEIVERID",
+      "date": "261117",
+      "time": "1200",
+      "standardsId": "U",
+      "version": "00401",
+      "controlNumber": "000000001",
+      "ackRequested": "0",
+      "usage": "P",
+      "componentSeparator": ">"
+    },
+    "groups": [
+      {
+        "GS": {
+          "functionalId": "PO",
+          "senderCode": "SENDERID",
+          "receiverCode": "RECEIVERID",
+          "date": "20261117",
+          "time": "1200",
+          "controlNumber": "1",
+          "agency": "X",
+          "version": "004010"
+        },
+        "transactions": [
+          {
+            "ST": {
+              "code": "850",
+              "controlNumber": "0001"
+            },
+            "guide": "x12-850",
+            "body": {
+              "BEG": {
+                "purposeCode": "00",
+                "typeCode": "SA",
+                "poNumber": "PO123",
+                "date": "20261117"
+              },
+              "PO1Loop": [
+                {
+                  "PO1": {
+                    "lineNumber": "1",
+                    "quantity": "2",
+                    "unit": "EA",
+                    "unitPrice": "9.5",
+                    "idQualifier1": "VP",
+                    "productId1": "A-1"
+                  },
+                  "PIDLoop": [
+                    {
+                      "PID": {
+                        "type": "F",
+                        "description": [
+                          "Widget",
+                          "Blue"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

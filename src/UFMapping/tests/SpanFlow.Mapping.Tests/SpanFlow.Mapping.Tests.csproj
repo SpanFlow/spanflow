@@ -19,6 +19,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\SpanFlow.Mapping.Core\SpanFlow.Mapping.Core.csproj" />
     <ProjectReference Include="..\..\src\SpanFlow.Mapping.Engine\SpanFlow.Mapping.Engine.csproj" />
+    <ProjectReference Include="..\..\src\SpanFlow.Mapping.Formats\SpanFlow.Mapping.Formats.csproj" />
+  </ItemGroup>
+
+  <!-- Format samples (E73): one folder per codec, run by FormatSamplesTests. Kept byte-exact (.gitattributes). -->
+  <ItemGroup>
+    <None Include="FormatSamples\**\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

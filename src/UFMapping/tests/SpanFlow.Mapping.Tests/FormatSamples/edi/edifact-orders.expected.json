@@ -1,0 +1,1 @@
+{"interchange":{"una":true,"UNB":[["UNOA","3"],["SENDER","14"],["RECEIVER","14"],["261117","1200"],"REF1"],"messages":[{"UNH":["1",["ORDERS","D","96A","UN"]],"segments":[{"id":"BGM","e":["220","PO123","9"]},{"id":"DTM","e":[["137","20261117","102"]]},{"id":"LIN","e":["1","",["A-1","IN"]]},{"id":"FTX","e":["AAI","","","Note with + plus and ' quote"]}]}]}}

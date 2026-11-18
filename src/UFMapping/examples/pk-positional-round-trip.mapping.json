@@ -1,0 +1,87 @@
+{
+  "formats": {
+    "input": {
+      "type": "positional",
+      "options": {
+        "layout": {
+          "fields": [
+            {
+              "name": "country",
+              "length": 2,
+              "type": "alpha"
+            },
+            {
+              "name": "account",
+              "length": 13,
+              "type": "numeric"
+            },
+            {
+              "name": "phone",
+              "length": 11,
+              "type": "numeric"
+            },
+            {
+              "name": "reference",
+              "prefix": 2,
+              "type": "alphanumeric"
+            }
+          ]
+        }
+      }
+    },
+    "output": {
+      "type": "positional",
+      "options": {
+        "layout": {
+          "fields": [
+            {
+              "name": "country",
+              "length": 2,
+              "type": "alpha"
+            },
+            {
+              "name": "account",
+              "length": 13,
+              "type": "numeric"
+            },
+            {
+              "name": "phone",
+              "length": 11,
+              "type": "numeric"
+            },
+            {
+              "name": "reference",
+              "prefix": 2,
+              "type": "alphanumeric"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "mappings": [
+      {
+        "target": "country",
+        "type": "fieldCopy",
+        "path": "input.country"
+      },
+      {
+        "target": "account",
+        "type": "fieldCopy",
+        "path": "input.account"
+      },
+      {
+        "target": "phone",
+        "type": "fieldCopy",
+        "path": "input.phone"
+      },
+      {
+        "target": "reference",
+        "type": "fieldCopy",
+        "path": "input.reference"
+      }
+    ]
+  }
+}

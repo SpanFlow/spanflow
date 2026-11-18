@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Order id="PO-77" date="2026-11-18">
+  <Customer><Name>Ayesha Traders</Name><City>Lahore</City></Customer>
+  <Line sku="W-7"><Qty>10</Qty><Price>4.25</Price></Line>
+  <Line sku="K-2"><Qty>3</Qty><Price>19.99</Price></Line>
+</Order>

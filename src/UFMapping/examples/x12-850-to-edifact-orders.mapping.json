@@ -1,0 +1,152 @@
+{
+  "formats": {
+    "input": {
+      "type": "edi",
+      "options": {
+        "guides": "bundled"
+      }
+    },
+    "output": {
+      "type": "edi",
+      "options": {
+        "guides": "bundled",
+        "newline": "lf"
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "mappings": [
+      {
+        "target": "interchange.UNB.syntax.id",
+        "type": "fieldCopy",
+        "path": "'UNOA'"
+      },
+      {
+        "target": "interchange.UNB.syntax.version",
+        "type": "fieldCopy",
+        "path": "'3'"
+      },
+      {
+        "target": "interchange.UNB.sender.id",
+        "type": "fieldCopy",
+        "path": "input.interchange.ISA.senderId"
+      },
+      {
+        "target": "interchange.UNB.sender.qualifier",
+        "type": "fieldCopy",
+        "path": "'ZZZ'"
+      },
+      {
+        "target": "interchange.UNB.recipient.id",
+        "type": "fieldCopy",
+        "path": "input.interchange.ISA.receiverId"
+      },
+      {
+        "target": "interchange.UNB.recipient.qualifier",
+        "type": "fieldCopy",
+        "path": "'ZZZ'"
+      },
+      {
+        "target": "interchange.UNB.preparation.date",
+        "type": "fieldCopy",
+        "path": "input.interchange.ISA.date"
+      },
+      {
+        "target": "interchange.UNB.preparation.time",
+        "type": "fieldCopy",
+        "path": "input.interchange.ISA.time"
+      },
+      {
+        "target": "interchange.UNB.controlReference",
+        "type": "fieldCopy",
+        "path": "input.interchange.ISA.controlNumber"
+      },
+      {
+        "target": "interchange.messages.UNH.reference",
+        "type": "fieldCopy",
+        "path": "input.interchange.groups.transactions.ST.controlNumber"
+      },
+      {
+        "target": "interchange.messages.UNH.type.type",
+        "type": "fieldCopy",
+        "path": "'ORDERS'"
+      },
+      {
+        "target": "interchange.messages.UNH.type.version",
+        "type": "fieldCopy",
+        "path": "'D'"
+      },
+      {
+        "target": "interchange.messages.UNH.type.release",
+        "type": "fieldCopy",
+        "path": "'96A'"
+      },
+      {
+        "target": "interchange.messages.UNH.type.agency",
+        "type": "fieldCopy",
+        "path": "'UN'"
+      },
+      {
+        "target": "interchange.messages.body.BGM.documentName.code",
+        "type": "fieldCopy",
+        "path": "'220'"
+      },
+      {
+        "target": "interchange.messages.body.BGM.documentNumber",
+        "type": "fieldCopy",
+        "path": "input.interchange.groups.transactions.body.BEG.poNumber"
+      },
+      {
+        "target": "interchange.messages.body.BGM.messageFunction",
+        "type": "fieldCopy",
+        "path": "'9'"
+      },
+      {
+        "target": "interchange.messages.body.DTM.period.qualifier",
+        "type": "fieldCopy",
+        "path": "'137'"
+      },
+      {
+        "target": "interchange.messages.body.DTM.period.value",
+        "type": "fieldCopy",
+        "path": "input.interchange.groups.transactions.body.BEG.date"
+      },
+      {
+        "target": "interchange.messages.body.DTM.period.format",
+        "type": "fieldCopy",
+        "path": "'102'"
+      },
+      {
+        "target": "interchange.messages.body.LINLoop",
+        "type": "foreach",
+        "from": "input.interchange.groups.transactions.body.PO1Loop[]",
+        "map": {
+          "LIN.lineNumber": "PO1.lineNumber",
+          "LIN.item.id": "PO1.productId1",
+          "LIN.item.type": "'SA'",
+          "QTY.quantity.qualifier": "'21'",
+          "QTY.quantity.value": "PO1.quantity",
+          "QTY.quantity.unit": "PO1.unit",
+          "PRILoop.PRI.price.qualifier": "'AAA'",
+          "PRILoop.PRI.price.amount": "PO1.unitPrice"
+        }
+      },
+      {
+        "target": "interchange.messages.body.UNS.sectionId",
+        "type": "fieldCopy",
+        "path": "'S'"
+      },
+      {
+        "target": "interchange.messages.body.CNT.control.qualifier",
+        "type": "fieldCopy",
+        "path": "'2'"
+      },
+      {
+        "target": "interchange.messages.body.CNT.control.value",
+        "type": "fieldCopy",
+        "path": "input.interchange.groups.transactions.body.CTTLoop.CTT.lineCount"
+      }
+    ]
+  }
+}

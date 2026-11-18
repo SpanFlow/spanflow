@@ -1,0 +1,828 @@
+{
+  "name": "iso8583-1987",
+  "title": "ISO 8583:1987 (characters, hex bitmap)",
+  "format": "positional",
+  "description": "Card messages with a 4-digit MTI, a hex bitmap (secondary when bit 1 is set) and the 1987 data elements 2 to 128 as text; LL and LLL lengths are digits. Copy it and rename, drop or retype the elements your network uses.",
+  "options": {
+    "layout": {
+      "fields": [
+        {
+          "name": "mti",
+          "length": 4,
+          "type": "numeric"
+        },
+        {
+          "bitmap": "hex",
+          "fields": [
+            {
+              "bit": 2,
+              "name": "pan",
+              "prefix": 2,
+              "max": 19,
+              "type": "numeric"
+            },
+            {
+              "bit": 3,
+              "name": "processingCode",
+              "length": 6,
+              "type": "numeric"
+            },
+            {
+              "bit": 4,
+              "name": "amountTransaction",
+              "length": 12,
+              "type": "numeric"
+            },
+            {
+              "bit": 5,
+              "name": "amountSettlement",
+              "length": 12,
+              "type": "numeric"
+            },
+            {
+              "bit": 6,
+              "name": "amountCardholderBilling",
+              "length": 12,
+              "type": "numeric"
+            },
+            {
+              "bit": 7,
+              "name": "transmissionDateTime",
+              "length": 10,
+              "type": "numeric"
+            },
+            {
+              "bit": 8,
+              "name": "amountCardholderBillingFee",
+              "length": 8,
+              "type": "numeric"
+            },
+            {
+              "bit": 9,
+              "name": "conversionRateSettlement",
+              "length": 8,
+              "type": "numeric"
+            },
+            {
+              "bit": 10,
+              "name": "conversionRateCardholderBilling",
+              "length": 8,
+              "type": "numeric"
+            },
+            {
+              "bit": 11,
+              "name": "stan",
+              "length": 6,
+              "type": "numeric"
+            },
+            {
+              "bit": 12,
+              "name": "localTime",
+              "length": 6,
+              "type": "numeric"
+            },
+            {
+              "bit": 13,
+              "name": "localDate",
+              "length": 4,
+              "type": "numeric"
+            },
+            {
+              "bit": 14,
+              "name": "expirationDate",
+              "length": 4,
+              "type": "numeric"
+            },
+            {
+              "bit": 15,
+              "name": "settlementDate",
+              "length": 4,
+              "type": "numeric"
+            },
+            {
+              "bit": 16,
+              "name": "conversionDate",
+              "length": 4,
+              "type": "numeric"
+            },
+            {
+              "bit": 17,
+              "name": "captureDate",
+              "length": 4,
+              "type": "numeric"
+            },
+            {
+              "bit": 18,
+              "name": "merchantType",
+              "length": 4,
+              "type": "numeric"
+            },
+            {
+              "bit": 19,
+              "name": "acquiringInstitutionCountryCode",
+              "length": 3,
+              "type": "numeric"
+            },
+            {
+              "bit": 20,
+              "name": "panExtendedCountryCode",
+              "length": 3,
+              "type": "numeric"
+            },
+            {
+              "bit": 21,
+              "name": "forwardingInstitutionCountryCode",
+              "length": 3,
+              "type": "numeric"
+            },
+            {
+              "bit": 22,
+              "name": "posEntryMode",
+              "length": 3,
+              "type": "numeric"
+            },
+            {
+              "bit": 23,
+              "name": "cardSequenceNumber",
+              "length": 3,
+              "type": "numeric"
+            },
+            {
+              "bit": 24,
+              "name": "networkInternationalId",
+              "length": 3,
+              "type": "numeric"
+            },
+            {
+              "bit": 25,
+              "name": "posConditionCode",
+              "length": 2,
+              "type": "numeric"
+            },
+            {
+              "bit": 26,
+              "name": "posCaptureCode",
+              "length": 2,
+              "type": "numeric"
+            },
+            {
+              "bit": 27,
+              "name": "authorizationIdResponseLength",
+              "length": 1,
+              "type": "numeric"
+            },
+            {
+              "bit": 28,
+              "name": "amountTransactionFee",
+              "length": 9,
+              "type": "text"
+            },
+            {
+              "bit": 29,
+              "name": "amountSettlementFee",
+              "length": 9,
+              "type": "text"
+            },
+            {
+              "bit": 30,
+              "name": "amountTransactionProcessingFee",
+              "length": 9,
+              "type": "text"
+            },
+            {
+              "bit": 31,
+              "name": "amountSettlementProcessingFee",
+              "length": 9,
+              "type": "text"
+            },
+            {
+              "bit": 32,
+              "name": "acquiringInstitutionId",
+              "prefix": 2,
+              "max": 11,
+              "type": "numeric"
+            },
+            {
+              "bit": 33,
+              "name": "forwardingInstitutionId",
+              "prefix": 2,
+              "max": 11,
+              "type": "numeric"
+            },
+            {
+              "bit": 34,
+              "name": "panExtended",
+              "prefix": 2,
+              "max": 28,
+              "type": "text"
+            },
+            {
+              "bit": 35,
+              "name": "track2Data",
+              "prefix": 2,
+              "max": 37,
+              "type": "text"
+            },
+            {
+              "bit": 36,
+              "name": "track3Data",
+              "prefix": 3,
+              "max": 104,
+              "type": "text"
+            },
+            {
+              "bit": 37,
+              "name": "retrievalReferenceNumber",
+              "length": 12,
+              "type": "text"
+            },
+            {
+              "bit": 38,
+              "name": "authorizationIdResponse",
+              "length": 6,
+              "type": "text"
+            },
+            {
+              "bit": 39,
+              "name": "responseCode",
+              "length": 2,
+              "type": "text"
+            },
+            {
+              "bit": 40,
+              "name": "serviceRestrictionCode",
+              "length": 3,
+              "type": "text"
+            },
+            {
+              "bit": 41,
+              "name": "cardAcceptorTerminalId",
+              "length": 8,
+              "type": "text"
+            },
+            {
+              "bit": 42,
+              "name": "cardAcceptorIdCode",
+              "length": 15,
+              "type": "text"
+            },
+            {
+              "bit": 43,
+              "name": "cardAcceptorNameLocation",
+              "length": 40,
+              "type": "text"
+            },
+            {
+              "bit": 44,
+              "name": "additionalResponseData",
+              "prefix": 2,
+              "max": 25,
+              "type": "text"
+            },
+            {
+              "bit": 45,
+              "name": "track1Data",
+              "prefix": 2,
+              "max": 76,
+              "type": "text"
+            },
+            {
+              "bit": 46,
+              "name": "additionalDataIso",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 47,
+              "name": "additionalDataNational",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 48,
+              "name": "additionalDataPrivate",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 49,
+              "name": "currencyCodeTransaction",
+              "length": 3,
+              "type": "text"
+            },
+            {
+              "bit": 50,
+              "name": "currencyCodeSettlement",
+              "length": 3,
+              "type": "text"
+            },
+            {
+              "bit": 51,
+              "name": "currencyCodeCardholderBilling",
+              "length": 3,
+              "type": "text"
+            },
+            {
+              "bit": 52,
+              "name": "pinData",
+              "length": 16,
+              "type": "text"
+            },
+            {
+              "bit": 53,
+              "name": "securityControlInfo",
+              "length": 16,
+              "type": "numeric"
+            },
+            {
+              "bit": 54,
+              "name": "additionalAmounts",
+              "prefix": 3,
+              "max": 120,
+              "type": "text"
+            },
+            {
+              "bit": 55,
+              "name": "iccData",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 56,
+              "name": "reservedIso56",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 57,
+              "name": "reservedNational57",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 58,
+              "name": "reservedNational58",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 59,
+              "name": "reservedNational59",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 60,
+              "name": "reservedNational60",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 61,
+              "name": "reservedPrivate61",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 62,
+              "name": "reservedPrivate62",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 63,
+              "name": "reservedPrivate63",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 64,
+              "name": "mac",
+              "length": 16,
+              "type": "text"
+            },
+            {
+              "bit": 66,
+              "name": "settlementCode",
+              "length": 1,
+              "type": "numeric"
+            },
+            {
+              "bit": 67,
+              "name": "extendedPaymentCode",
+              "length": 2,
+              "type": "numeric"
+            },
+            {
+              "bit": 68,
+              "name": "receivingInstitutionCountryCode",
+              "length": 3,
+              "type": "numeric"
+            },
+            {
+              "bit": 69,
+              "name": "settlementInstitutionCountryCode",
+              "length": 3,
+              "type": "numeric"
+            },
+            {
+              "bit": 70,
+              "name": "networkManagementCode",
+              "length": 3,
+              "type": "numeric"
+            },
+            {
+              "bit": 71,
+              "name": "messageNumber",
+              "length": 4,
+              "type": "numeric"
+            },
+            {
+              "bit": 72,
+              "name": "messageNumberLast",
+              "length": 4,
+              "type": "numeric"
+            },
+            {
+              "bit": 73,
+              "name": "actionDate",
+              "length": 6,
+              "type": "numeric"
+            },
+            {
+              "bit": 74,
+              "name": "creditsNumber",
+              "length": 10,
+              "type": "numeric"
+            },
+            {
+              "bit": 75,
+              "name": "creditsReversalNumber",
+              "length": 10,
+              "type": "numeric"
+            },
+            {
+              "bit": 76,
+              "name": "debitsNumber",
+              "length": 10,
+              "type": "numeric"
+            },
+            {
+              "bit": 77,
+              "name": "debitsReversalNumber",
+              "length": 10,
+              "type": "numeric"
+            },
+            {
+              "bit": 78,
+              "name": "transferNumber",
+              "length": 10,
+              "type": "numeric"
+            },
+            {
+              "bit": 79,
+              "name": "transferReversalNumber",
+              "length": 10,
+              "type": "numeric"
+            },
+            {
+              "bit": 80,
+              "name": "inquiriesNumber",
+              "length": 10,
+              "type": "numeric"
+            },
+            {
+              "bit": 81,
+              "name": "authorizationsNumber",
+              "length": 10,
+              "type": "numeric"
+            },
+            {
+              "bit": 82,
+              "name": "creditsProcessingFeeAmount",
+              "length": 12,
+              "type": "numeric"
+            },
+            {
+              "bit": 83,
+              "name": "creditsTransactionFeeAmount",
+              "length": 12,
+              "type": "numeric"
+            },
+            {
+              "bit": 84,
+              "name": "debitsProcessingFeeAmount",
+              "length": 12,
+              "type": "numeric"
+            },
+            {
+              "bit": 85,
+              "name": "debitsTransactionFeeAmount",
+              "length": 12,
+              "type": "numeric"
+            },
+            {
+              "bit": 86,
+              "name": "creditsAmount",
+              "length": 16,
+              "type": "numeric"
+            },
+            {
+              "bit": 87,
+              "name": "creditsReversalAmount",
+              "length": 16,
+              "type": "numeric"
+            },
+            {
+              "bit": 88,
+              "name": "debitsAmount",
+              "length": 16,
+              "type": "numeric"
+            },
+            {
+              "bit": 89,
+              "name": "debitsReversalAmount",
+              "length": 16,
+              "type": "numeric"
+            },
+            {
+              "bit": 90,
+              "name": "originalDataElements",
+              "length": 42,
+              "type": "numeric"
+            },
+            {
+              "bit": 91,
+              "name": "fileUpdateCode",
+              "length": 1,
+              "type": "text"
+            },
+            {
+              "bit": 92,
+              "name": "fileSecurityCode",
+              "length": 2,
+              "type": "text"
+            },
+            {
+              "bit": 93,
+              "name": "responseIndicator",
+              "length": 5,
+              "type": "text"
+            },
+            {
+              "bit": 94,
+              "name": "serviceIndicator",
+              "length": 7,
+              "type": "text"
+            },
+            {
+              "bit": 95,
+              "name": "replacementAmounts",
+              "length": 42,
+              "type": "text"
+            },
+            {
+              "bit": 96,
+              "name": "messageSecurityCode",
+              "length": 16,
+              "type": "text"
+            },
+            {
+              "bit": 97,
+              "name": "amountNetSettlement",
+              "length": 17,
+              "type": "text"
+            },
+            {
+              "bit": 98,
+              "name": "payee",
+              "length": 25,
+              "type": "text"
+            },
+            {
+              "bit": 99,
+              "name": "settlementInstitutionId",
+              "prefix": 2,
+              "max": 11,
+              "type": "numeric"
+            },
+            {
+              "bit": 100,
+              "name": "receivingInstitutionId",
+              "prefix": 2,
+              "max": 11,
+              "type": "numeric"
+            },
+            {
+              "bit": 101,
+              "name": "fileName",
+              "prefix": 2,
+              "max": 17,
+              "type": "text"
+            },
+            {
+              "bit": 102,
+              "name": "accountId1",
+              "prefix": 2,
+              "max": 28,
+              "type": "text"
+            },
+            {
+              "bit": 103,
+              "name": "accountId2",
+              "prefix": 2,
+              "max": 28,
+              "type": "text"
+            },
+            {
+              "bit": 104,
+              "name": "transactionDescription",
+              "prefix": 3,
+              "max": 100,
+              "type": "text"
+            },
+            {
+              "bit": 105,
+              "name": "reservedIso105",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 106,
+              "name": "reservedIso106",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 107,
+              "name": "reservedIso107",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 108,
+              "name": "reservedIso108",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 109,
+              "name": "reservedIso109",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 110,
+              "name": "reservedIso110",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 111,
+              "name": "reservedIso111",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 112,
+              "name": "reservedNational112",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 113,
+              "name": "reservedNational113",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 114,
+              "name": "reservedNational114",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 115,
+              "name": "reservedNational115",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 116,
+              "name": "reservedNational116",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 117,
+              "name": "reservedNational117",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 118,
+              "name": "reservedNational118",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 119,
+              "name": "reservedNational119",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 120,
+              "name": "reservedPrivate120",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 121,
+              "name": "reservedPrivate121",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 122,
+              "name": "reservedPrivate122",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 123,
+              "name": "reservedPrivate123",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 124,
+              "name": "reservedPrivate124",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 125,
+              "name": "reservedPrivate125",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 126,
+              "name": "reservedPrivate126",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 127,
+              "name": "reservedPrivate127",
+              "prefix": 3,
+              "max": 999,
+              "type": "text"
+            },
+            {
+              "bit": 128,
+              "name": "mac2",
+              "length": 16,
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

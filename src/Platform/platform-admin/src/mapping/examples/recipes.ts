@@ -20,7 +20,15 @@ export interface Recipe {
    *  mapping graph that calls it (built with the seeded function's id). */
   functionName?: string;
   buildMapping?: (functionId: string) => { nodes: Node[]; edges: Edge[] };
+  /**
+   * E73: a format example (its mapping has a formats block): input and output are the raw text, not JSON. The
+   * example it was generated from, in the UFMapping repo, for the docs to point at.
+   */
+  source?: string;
 }
+
+/** A format example: raw text in and out, read and written by the mapping's formats block. */
+export const isFormatRecipe = (r: Recipe): boolean => !!(r.dsl as { formats?: unknown }).formats && typeof r.input === 'string';
 
 export const RECIPES: Recipe[] = [
   // ---- Basics ----------------------------------------------------------

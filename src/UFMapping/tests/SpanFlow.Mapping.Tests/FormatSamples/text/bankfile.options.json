@@ -1,0 +1,8 @@
+{ "mode": "fixed", "layout": { "records": [
+  { "name": "header", "when": { "start": 0, "equals": "H" }, "fields": [
+    { "const": "H", "length": 1 }, { "name": "bank", "length": 10 }, { "name": "date", "length": 8, "type": "date", "format": "yyyyMMdd" } ] },
+  { "name": "details", "many": true, "when": { "equals": "D" }, "fields": [
+    { "const": "D", "length": 1 }, { "name": "account", "length": 13, "type": "numeric" }, { "name": "name", "length": 12 },
+    { "name": "amount", "length": 10, "type": "decimal", "scale": 2 } ] },
+  { "name": "trailer", "when": { "equals": "T" }, "fields": [
+    { "const": "T", "length": 1 }, { "name": "count", "length": 4, "type": "integer" }, { "name": "total", "length": 12, "type": "decimal", "scale": 2 } ] } ] } }

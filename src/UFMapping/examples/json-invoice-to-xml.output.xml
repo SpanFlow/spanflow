@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Invoice number="INV-9">
+  <Customer>Ali Khan</Customer>
+  <Line item="Widget">
+    <Amount>120</Amount>
+  </Line>
+  <Line item="Bolt">
+    <Amount>4.5</Amount>
+  </Line>
+</Invoice>

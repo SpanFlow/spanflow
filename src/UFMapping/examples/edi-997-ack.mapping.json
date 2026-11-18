@@ -1,0 +1,52 @@
+{
+  "formats": {
+    "input": { "type": "edi", "options": { "guides": "bundled" } },
+    "output": { "type": "edi", "options": { "guides": "bundled", "newline": "\n" } }
+  },
+  "target": {
+    "type": "object",
+    "mappings": [
+      { "target": "interchange.ISA.authorizationQualifier", "type": "fieldCopy", "path": "'00'" },
+      { "target": "interchange.ISA.securityQualifier", "type": "fieldCopy", "path": "'00'" },
+      { "target": "interchange.ISA.senderQualifier", "type": "fieldCopy", "path": "input.interchange.ISA.receiverQualifier" },
+      { "target": "interchange.ISA.senderId", "type": "fieldCopy", "path": "input.interchange.ISA.receiverId" },
+      { "target": "interchange.ISA.receiverQualifier", "type": "fieldCopy", "path": "input.interchange.ISA.senderQualifier" },
+      { "target": "interchange.ISA.receiverId", "type": "fieldCopy", "path": "input.interchange.ISA.senderId" },
+      { "target": "interchange.ISA.date", "type": "fieldCopy", "path": "input.interchange.ISA.date" },
+      { "target": "interchange.ISA.time", "type": "fieldCopy", "path": "input.interchange.ISA.time" },
+      { "target": "interchange.ISA.standardsId", "type": "fieldCopy", "path": "'U'" },
+      { "target": "interchange.ISA.version", "type": "fieldCopy", "path": "'00401'" },
+      { "target": "interchange.ISA.controlNumber", "type": "fieldCopy", "path": "input.interchange.ISA.controlNumber" },
+      { "target": "interchange.ISA.ackRequested", "type": "fieldCopy", "path": "'0'" },
+      { "target": "interchange.ISA.usage", "type": "fieldCopy", "path": "input.interchange.ISA.usage" },
+
+      { "target": "interchange.groups.GS.functionalId", "type": "fieldCopy", "path": "'FA'" },
+      { "target": "interchange.groups.GS.senderCode", "type": "fieldCopy", "path": "input.interchange.groups.GS.receiverCode" },
+      { "target": "interchange.groups.GS.receiverCode", "type": "fieldCopy", "path": "input.interchange.groups.GS.senderCode" },
+      { "target": "interchange.groups.GS.date", "type": "fieldCopy", "path": "input.interchange.groups.GS.date" },
+      { "target": "interchange.groups.GS.time", "type": "fieldCopy", "path": "input.interchange.groups.GS.time" },
+      { "target": "interchange.groups.GS.controlNumber", "type": "fieldCopy", "path": "input.interchange.groups.GS.controlNumber" },
+      { "target": "interchange.groups.GS.agency", "type": "fieldCopy", "path": "'X'" },
+      { "target": "interchange.groups.GS.version", "type": "fieldCopy", "path": "'004010'" },
+
+      { "target": "interchange.groups.transactions.ST.code", "type": "fieldCopy", "path": "'997'" },
+      { "target": "interchange.groups.transactions.ST.controlNumber", "type": "fieldCopy", "path": "'0001'" },
+      { "target": "interchange.groups.transactions.body.AK1.functionalIdCode", "type": "fieldCopy", "path": "input.interchange.groups.GS.functionalId" },
+      { "target": "interchange.groups.transactions.body.AK1.groupControlNumber", "type": "fieldCopy", "path": "input.interchange.groups.GS.controlNumber" },
+      {
+        "target": "interchange.groups.transactions.body.AK2Loop",
+        "type": "foreach",
+        "from": "input.interchange.groups.transactions[]",
+        "map": {
+          "AK2.code": "ST.code",
+          "AK2.controlNumber": "ST.controlNumber",
+          "AK5.status": "'A'"
+        }
+      },
+      { "target": "interchange.groups.transactions.body.AK9.status", "type": "fieldCopy", "path": "'A'" },
+      { "target": "interchange.groups.transactions.body.AK9.included", "type": "aggregate", "function": "count", "from": "input.interchange.groups.transactions[]" },
+      { "target": "interchange.groups.transactions.body.AK9.received", "type": "aggregate", "function": "count", "from": "input.interchange.groups.transactions[]" },
+      { "target": "interchange.groups.transactions.body.AK9.accepted", "type": "aggregate", "function": "count", "from": "input.interchange.groups.transactions[]" }
+    ]
+  }
+}

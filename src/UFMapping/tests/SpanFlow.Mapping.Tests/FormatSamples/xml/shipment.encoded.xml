@@ -1,0 +1,7 @@
+<Shipment>
+  <Package>
+    <Weight>2.5</Weight>
+    <Fragile>true</Fragile>
+  </Package>
+  <Code>007</Code>
+</Shipment>

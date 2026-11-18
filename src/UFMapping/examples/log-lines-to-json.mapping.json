@@ -1,0 +1,37 @@
+{
+  "formats": {
+    "input": {
+      "type": "text",
+      "options": {
+        "mode": "pattern",
+        "pattern": "^(?<date>\\S+) (?<time>\\S+) (?<level>[A-Z]+) (?<message>.*)$"
+      }
+    },
+    "output": {
+      "type": "json",
+      "options": {
+        "indent": true
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "mappings": [
+      {
+        "target": "events",
+        "type": "foreach",
+        "from": "input.rows[]",
+        "map": {
+          "at": "time",
+          "level": "level",
+          "text": "message"
+        }
+      },
+      {
+        "target": "skipped",
+        "type": "fieldCopy",
+        "path": "input.unmatched"
+      }
+    ]
+  }
+}

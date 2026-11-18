@@ -8,6 +8,34 @@ public sealed class MappingDefinition
     public Dictionary<string, string> Sources { get; init; } = new(StringComparer.OrdinalIgnoreCase);
 
     public TargetDefinition Target { get; init; } = new();
+
+    /// <summary>
+    /// Optional wire formats around the mapping: how the raw input is read into JSON and how the mapped JSON is
+    /// written out (xml, text, edi, positional ...). Absent, or a side left out, means plain JSON, which is what
+    /// <c>MappingEngine</c> always works on. Applied by <c>MappingRunner</c> (SpanFlow.Mapping.Formats); the
+    /// engine itself ignores it.
+    /// </summary>
+    public FormatsDefinition? Formats { get; init; }
+}
+
+/// <summary>The input and output formats of a mapping. Either side may be left out (= json).</summary>
+public sealed class FormatsDefinition
+{
+    /// <summary>How the raw input is decoded into the JSON the mapping reads (the <c>input</c> source).</summary>
+    public FormatSpec? Input { get; init; }
+
+    /// <summary>How the mapped JSON is encoded into the raw output.</summary>
+    public FormatSpec? Output { get; init; }
+}
+
+/// <summary>One side's format: a codec type and that codec's options.</summary>
+public sealed class FormatSpec
+{
+    /// <summary>The codec, e.g. <c>json</c>, <c>xml</c>, <c>text</c>, <c>edi</c>, <c>positional</c>.</summary>
+    public string Type { get; init; } = "json";
+
+    /// <summary>Codec-specific options (a layout, a delimiter, array paths ...). Each codec documents its own.</summary>
+    public JsonObject? Options { get; init; }
 }
 
 public sealed class TargetDefinition

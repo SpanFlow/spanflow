@@ -66,6 +66,11 @@ internal static class StandaloneDesigner
         .WithName("ExecuteMapping");
 
         MappingEndpoints.MapTrace(app);
+        MappingEndpoints.MapRun(app, isDevelopment);
+        MappingEndpoints.MapDecode(app);
+        MappingEndpoints.MapFormats(app);
+        MappingEndpoints.MapStarters(app);
+        MappingEndpoints.MapEdiGuides(app);
 
         // Lets the UI (and a person with curl) tell which mode answered.
         app.MapGet("/api/designer/info", () => Results.Ok(new

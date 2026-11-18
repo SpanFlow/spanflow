@@ -1,0 +1,9 @@
+{
+  "mti": "0200",
+  "pan": "4111111111111111",
+  "processingCode": "000000",
+  "amountTransaction": "000000010000",
+  "stan": "123456",
+  "cardAcceptorTerminalId": "TERM0001",
+  "currencyCodeTransaction": "840"
+}

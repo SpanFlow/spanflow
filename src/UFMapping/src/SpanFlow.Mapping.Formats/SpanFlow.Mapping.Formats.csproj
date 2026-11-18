@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Packable.props" />
+
+  <PropertyGroup>
+    <PackageId>SpanFlow.Mapping.Formats</PackageId>
+    <Description>Reads and writes the wire formats around a SpanFlow mapping: the raw input is decoded into JSON, the mapping engine runs unchanged, and the result is encoded into the output format. MappingRunner does all three.</Description>
+    <PackageTags>$(PackageTags);xml;edi;fixed-width;iso8583;ebcdic;formats</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpanFlow.Mapping.Engine\SpanFlow.Mapping.Engine.csproj" />
+  </ItemGroup>
+
+  <!-- E73-T9: starter layouts are data (D73.7), shipped inside the assembly. -->
+  <ItemGroup>
+    <EmbeddedResource Include="Starters\*.json" LogicalName="SpanFlow.Mapping.Formats.Starters.%(Filename)%(Extension)" />
+    <!-- E73-T11: EDI guides are data too (D73.8). -->
+    <EmbeddedResource Include="Guides\*.json" LogicalName="SpanFlow.Mapping.Formats.Guides.%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

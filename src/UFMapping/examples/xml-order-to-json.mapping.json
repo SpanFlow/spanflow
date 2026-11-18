@@ -1,0 +1,54 @@
+{
+  "formats": {
+    "input": {
+      "type": "xml",
+      "options": {
+        "arrays": [
+          "/Order/Line"
+        ],
+        "types": "infer"
+      }
+    },
+    "output": {
+      "type": "json",
+      "options": {
+        "indent": true
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "mappings": [
+      {
+        "target": "orderId",
+        "type": "fieldCopy",
+        "path": "input.Order.@id"
+      },
+      {
+        "target": "date",
+        "type": "fieldCopy",
+        "path": "input.Order.@date"
+      },
+      {
+        "target": "customer.name",
+        "type": "fieldCopy",
+        "path": "input.Order.Customer.Name"
+      },
+      {
+        "target": "customer.city",
+        "type": "fieldCopy",
+        "path": "input.Order.Customer.City"
+      },
+      {
+        "target": "lines",
+        "type": "foreach",
+        "from": "input.Order.Line[]",
+        "map": {
+          "sku": "@sku",
+          "qty": "Qty",
+          "price": "Price"
+        }
+      }
+    ]
+  }
+}
